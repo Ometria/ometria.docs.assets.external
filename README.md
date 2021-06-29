@@ -1,20 +1,12 @@
-# ometria.template.github-repo
+# ometria.docs.assets
 
 ### Purpose
 
-### Development
-
-This project contains a Makefile with the following targets to be used whilst developing and building the application.
-
-- make help
-- make dep
-- make test
-- make run
+Stores assets for the docs on endpoint: https://docs-assets.ew1-prod.ew1.prod.ometria.cloud/
 
 # Deployment
 
-???
-
+Deploys via [concourse job](https://concourse.public.ew1-shared.ew1.shared.ometria.cloud/teams/developers/pipelines/ometria-docs-assets)
 # Maintainers 
 
 [devs](https://github.com/orgs/Ometria/teams/devs)
