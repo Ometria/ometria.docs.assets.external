@@ -1731,6 +1731,7 @@
           "id",
           "timestamp",
           "grand_total",
+          "subtotal",
           "currency"
         ],
         "properties": {
