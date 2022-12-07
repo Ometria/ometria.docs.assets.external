@@ -2940,10 +2940,6 @@
           "preferred_lang": {
             "type": "string",
             "description": "The preferred language of the contact.\nThis is supplied in ISO 639-1 format."
-          },
-          "preferred_lang_source": {
-            "type": "string",
-            "description": "The preferred language source of the contact.\nThis is supplied in ISO 639-1 format."
           }
         },
         "example": {
