@@ -2985,8 +2985,7 @@
               "id": "bob22@example.com"
             }
           ],
-          "preferred_lang": "en-GB",
-          "preferred_lang_source": "web"
+          "preferred_lang": "en-GB"
         }
       },
       "ProfileStats": {
