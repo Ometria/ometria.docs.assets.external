@@ -3212,7 +3212,8 @@
           "profile_id": "",
           "template_id": 3,
           "data": {},
-          "sandbox": true
+          "sandbox": true,
+          "url_parameters": {"utm_campaign": "transactional campaign"}
         }
       },
       "TransactionalEmailAddress": {
