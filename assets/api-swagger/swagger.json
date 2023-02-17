@@ -792,27 +792,8 @@
         "tags": [
           "Profiles"
         ],
-        "parameters": [
-          {
-            "name": "Ometria-Account-Id",
-            "in": "header",
-            "description": "Account ID to search for profile within",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "summary": "Merge profiles with duplicate email and/or id",
         "description": "Merge the profile on email and / or id",
-        "responses": {
-          "200": {
-            "description": "merge request accepted"
-          },
-          "404": {
-            "description": "The profile could not be found"
-          }
-        },
         "requestBody": {
           "required": true,
           "description": "profile to merge",
@@ -836,7 +817,15 @@
               }
             }
           }
-        }
+        },
+        "responses": {
+          "200": {
+            "description": "merge request accepted"
+          },
+          "404": {
+            "description": "The profile could not be found"
+          }
+        }        
       }
     },
     "/lists": {
