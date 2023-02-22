@@ -23,23 +23,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Contact"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CustomEvent"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Order"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Product"
-                    }
-                  ]
-                }
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Contact"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CustomEvent"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Order"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                ]
               }
             }
           },
@@ -791,47 +788,44 @@
         }
       }
     }, "/merge-profile": {
-      "get": {
+      "post": {
         "tags": [
           "Profiles"
         ],
         "summary": "Merge profiles with duplicate email and/or id",
         "description": "Merge the profile on email and / or id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The id of the profile to merge.",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "email_address",
-            "in": "path",
-            "description": "The email address of the profile to merge.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Profile is successfully merged",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Merge-profile"
+        "requestBody": {
+          "required": true,
+          "description": "profile to merge",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "email of the profile required for merging"
+                  },
+                  "profile_id": {
+                    "type": "integer",
+                    "description": "the id of the profile required for merging (will match using email)"
+                  }
                 }
+              },
+              "example": {
+                "email": "example@email.com"
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "merge request accepted"
           },
           "404": {
-            "description": "required either profile_id or email"
+            "description": "The profile could not be found"
           }
-        }
+        }        
       }
     },
     "/lists": {
@@ -3588,19 +3582,6 @@
           "timestamp": "2017-05-17 22:08:07+00",
           "reason": null,
           "reason_text": null
-        }
-      },
-      "Merge-profile": {
-        "type": "object",
-        "description": "Response from merging a profile successfully",
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "The status of the profile"
-          }
-        },
-        "example": {
-          "status": "profiles merged"
         }
       }
     }
