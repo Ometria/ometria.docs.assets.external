@@ -1637,6 +1637,10 @@
           },
           "id": {
             "type": "string",
+            "description": "The (hashed) ID of the list."
+          },
+          "public_id": {
+            "type": "integer",
             "description": "The ID of the list."
           },
           "title": {
@@ -1696,7 +1700,8 @@
         },
         "example": {
           "@type": "list",
-          "id": "1234",
+          "id": "21f55a266d69",
+          "public_id": 1234,
           "title": "Title of the list",
           "description": "Description of the list",
           "status": "READY",
