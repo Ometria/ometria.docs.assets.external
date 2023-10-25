@@ -750,7 +750,7 @@
         }
       }
     },
-    "/profiles/{email_address}": {
+    "/profiles": {
       "get": {
         "tags": [
           "Profiles"
@@ -759,8 +759,8 @@
         "description": "Return profile as a JSON object",
         "parameters": [
           {
-            "name": "email_address",
-            "in": "path",
+            "name": "email",
+            "in": "query",
             "description": "The email address of the profile to fetch.",
             "required": true,
             "schema": {
