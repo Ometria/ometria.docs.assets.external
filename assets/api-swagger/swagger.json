@@ -23,24 +23,28 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Contact"
-                  },
-                  {
-                    "$ref": "#/components/schemas/CustomEvent"
-                  },
-                  {
-                    "$ref": "#/components/schemas/Order"
-                  },
-                  {
-                    "$ref": "#/components/schemas/Product"
-                  }
-                ]
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Contact"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CustomEvent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Order"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Product"
+                    }
+                  ]
+                },
+                "maxItems": 100
               }
             }
           },
-          "description": "Push object",
+          "description": "Push object list",
           "required": true
         },
         "responses": {
@@ -1567,11 +1571,7 @@
             "description": "The date and time of the event, following ISO 8601 DateTime format with timezone offset YYYY-MM-DDThh:mm:ss+Z."
           },
           "properties": {
-            "type": "array",
-            "description": "Properties to be used in the custom event. These are defined by you.",
-            "items": {
-              "$ref": "#/components/schemas/CustomEventProperties"
-            }
+            "$ref": "#/components/schemas/CustomEventProperties"
           },
           "profile_id": {
             "type": "string",
