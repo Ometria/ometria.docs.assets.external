@@ -1627,9 +1627,11 @@
             "description": "Whole or decimal numbers"
           },
           "products_list_custom_field": {
-            "type": "object",
+            "type": "array",
             "description": "Returns a list of your <a href=\"https://support.ometria.com/hc/en-gb/articles/360011308998\" target=\"_blank\">products</a>",
-            "format": "array"
+            "items": {
+              "type": "string"
+            }
           },
           "date_custom_field": {
             "type": "string",
