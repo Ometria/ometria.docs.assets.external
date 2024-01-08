@@ -754,7 +754,7 @@
         }
       }
     },
-    "/profiles": {
+    "/profiles/{email}": {
       "get": {
         "tags": [
           "Profiles"
