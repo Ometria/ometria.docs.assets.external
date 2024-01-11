@@ -691,6 +691,15 @@
               "type": "string",
               "format": "date"
             }
+          },
+          {
+            "name": "email",
+            "in": "path",
+            "description": "The email address of the profile to fetch.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -754,44 +763,7 @@
         }
       }
     },
-    "/profiles/{email}": {
-      "get": {
-        "tags": [
-          "Profiles"
-        ],
-        "summary": "Fetch individual profile by email address",
-        "description": "Return profile as a JSON object",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "description": "The email address of the profile to fetch.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Return a single profile record",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Profile"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "API key is not authorised to access this resource"
-          },
-          "404": {
-            "description": "Profile with specified email address was not found"
-          }
-        }
-      }
-    }, "/merge-profile": {
+    "/merge-profile": {
       "post": {
         "tags": [
           "Profiles"
