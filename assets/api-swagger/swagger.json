@@ -694,9 +694,9 @@
           },
           {
             "name": "email",
-            "in": "path",
+            "in": "query",
             "description": "The email address of the profile to fetch.",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             }
