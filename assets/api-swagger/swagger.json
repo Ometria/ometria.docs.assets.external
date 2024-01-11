@@ -764,7 +764,7 @@
         "parameters": [
           {
             "name": "email",
-            "in": "query",
+            "in": "path",
             "description": "The email address of the profile to fetch.",
             "required": true,
             "schema": {
