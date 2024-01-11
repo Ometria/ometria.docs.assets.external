@@ -1410,7 +1410,7 @@
           },
           "prefix": {
             "type": "string",
-            "description": "The contact's title, e.g. Mr, Ms, etc. max length: 16."
+            "description": "The contact's title.\nOmetria accepts any of the following: Mr, Mrs, Miss, Ms.\nIf the gender field is left empty, Ometria infers gender from the prefix (e.g. Mr will be 'm', Ms will be 'f', etc.)\nmax length: 16."
           },
           "firstname": {
             "type": "string",
@@ -1426,7 +1426,7 @@
           },
           "gender": {
             "type": "string",
-            "description": "The contact's gender.\nWe currently support the values \"m\" (man), \"f\" (woman) and \"o\" (other).\nUse the value \"o\" when the contact's gender is known but it is not \"m\" or \"f\". If the contact's gender is unknown then the field \"gender\" should not be included.\nIf left empty this field will be set to 'null'.",
+            "description": "The contact's gender.\nWe currently support the values \"m\" (man), \"f\" (woman) and \"o\" (other).\nUse the value \"o\" when the contact's gender is known but it is not \"m\" or \"f\". If the contact's gender is unknown then the field \"gender\" should not be included.\nIf left empty, gender is inferred from the contact's prefix (e.g 'Ms' will be 'f').",
             "enum": [
               "m",
               "f",
