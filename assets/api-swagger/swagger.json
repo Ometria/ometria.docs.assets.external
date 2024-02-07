@@ -414,6 +414,15 @@
             }
           },
           {
+            "name": "updateSince",
+            "in": "query",
+            "description": "Only return contacts that have been updated since this date.\nThis does not return contacts who have entered or exited a dynamic segment in that time.",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "description": "The number of items to return. Maximum 250.",
