@@ -2747,6 +2747,10 @@
             "type": "boolean",
             "description": "Whether or not this product record represents a <a href=\"https://ometria-api-reference.readme.io/docs/products-product-listings-and-product-variants\" target=\"_blank\">variant product</a>."
           },
+          "parent_id": {
+            "type": "string",
+            "description": "The ID of the parent product, if this product is a variant. Max length: 255."
+          },
           "price": {
             "type": "number",
             "description": "The default display price (account default currency / store).",
