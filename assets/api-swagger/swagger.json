@@ -783,7 +783,7 @@
           {
             "name": "Ometria-Account-Id",
             "in": "header",
-            "description": "Account ID to search within for the profiles.",
+            "description": "ID for the account in which to search for the profiles.",
             "required": true,
             "schema": {
               "type": "string"
