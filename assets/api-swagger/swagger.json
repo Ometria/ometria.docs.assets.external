@@ -914,6 +914,228 @@
               }
             }
           }
+        }
+      },
+      "get": {
+        "tags": [
+          "Profiles"
+        ],
+        "summary": "Get the status of all merge jobs in a given account.",
+        "description": "Get the status of all merge jobs in a given account.",
+        "parameters": [
+          {
+            "name": "Ometria-Account-Id",
+            "in": "header",
+            "description": "ID for the account in which to search for the profiles.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The limit for pagination purposes.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset for pagination purposes.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The statuses of the merge jobs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "offset": {
+                      "type": "integer",
+                      "description": "The offset used for pagination."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The limit used for pagination."
+                    },
+                    "job_count": {
+                      "type": "integer",
+                      "description": "The number of merge jobs returned."
+                    },
+                    "total_job_count": {
+                      "type": "integer",
+                      "description": "The total number of merge jobs in the account."
+                    },
+                    "jobs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MergeProfileJobStatus"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "offset": 2,
+                  "limit": 10,
+                  "job_count": 3,
+                  "total_job_count": 5,
+                  "jobs": [
+                    {
+                      "job_id": 12,
+                      "status": "finished"
+                    },
+                    {
+                      "job_id": 13,
+                      "status": "failed"
+                    },
+                    {
+                      "job_id": 14,
+                      "status": "in_progress"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing account ID header.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 400,
+                  "type": "about:blank",
+                  "detail": "Missing account ID header",
+                  "title": "Bad Request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 500,
+                  "type": "about:blank",
+                  "detail": "Internal Server Error",
+                  "title": "An error occurred"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merge-profile/{job_id}": {
+      "get": {
+        "tags": [
+          "Profiles"
+        ],
+        "summary": "Get the status of a specific merge job.",
+        "description": "Get the status of a specific merge job.",
+        "parameters": [
+          {
+            "name": "Ometria-Account-Id",
+            "in": "header",
+            "description": "ID for the account in which to search for the profile.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "job_id",
+            "in": "path",
+            "description": "The id of the merge job.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The statuses of the merge jobs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MergeProfileJobStatus"
+                },
+                "example": {
+                  "job_id": 1234,
+                  "status": "finished"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing account ID header.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 400,
+                  "type": "about:blank",
+                  "detail": "Missing account ID header",
+                  "title": "Bad Request"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Merge job not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 404,
+                  "type": "about:blank",
+                  "detail": "Merge job 15 not found",
+                  "title": "Bad Request"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 500,
+                  "type": "about:blank",
+                  "detail": "Internal Server Error",
+                  "title": "An error occurred"
+                }
+              }
+            }
+          }
         }        
       }
     },
@@ -3718,6 +3940,24 @@
           "value": {
             "type": "string",
             "description": "Value of profile identifier."
+          }
+        }
+      },
+      "MergeProfileJobStatus": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "integer",
+            "description": "The id of the merge job."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the merge job.",
+            "enum": [
+              "in_progress",
+              "completed",
+              "failed"
+            ]
           }
         }
       },
