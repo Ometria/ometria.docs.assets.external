@@ -779,17 +779,6 @@
         ],
         "summary": "Merge profiles based on the provided identifiers.",
         "description": "Merge customers_to_merge profiles into the survivor profile using the allowed identifiers (customer_id, profile_hash, email_address and phone_number).",
-        "parameters": [
-          {
-            "name": "Ometria-Account-Id",
-            "in": "header",
-            "description": "ID for the account in which to search for the profiles.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "description": "profiles to merge, customers_to_merge will be merged into survivor",
@@ -866,6 +855,9 @@
               }
             }
           },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
           "404": {
             "description": "Profile not found.",
             "content": {
@@ -920,18 +912,9 @@
         "tags": [
           "Profiles"
         ],
-        "summary": "Get the status of all merge jobs in a given account.",
-        "description": "Get the status of all merge jobs in a given account.",
+        "summary": "Get the status of merge jobs in a given account.",
+        "description": "Get the status of merge jobs in a given account.",
         "parameters": [
-          {
-            "name": "Ometria-Account-Id",
-            "in": "header",
-            "description": "ID for the account in which to search for the profiles.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "limit",
             "in": "query",
@@ -1012,7 +995,7 @@
             }
           },
           "400": {
-            "description": "Missing account ID header.",
+            "description": "Invalid limit or offset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1021,11 +1004,14 @@
                 "example": {
                   "status": 400,
                   "type": "about:blank",
-                  "detail": "Missing account ID header",
+                  "detail": "-1 is less than the minimum of 0",
                   "title": "Bad Request"
                 }
               }
             }
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
           },
           "500": {
             "description": "An error occurred.",
@@ -1055,15 +1041,6 @@
         "description": "Get the status of a specific merge job.",
         "parameters": [
           {
-            "name": "Ometria-Account-Id",
-            "in": "header",
-            "description": "ID for the account in which to search for the profile.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "job_id",
             "in": "path",
             "description": "The id of the merge job.",
@@ -1088,21 +1065,8 @@
               }
             }
           },
-          "400": {
-            "description": "Missing account ID header.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
-                },
-                "example": {
-                  "status": 400,
-                  "type": "about:blank",
-                  "detail": "Missing account ID header",
-                  "title": "Bad Request"
-                }
-              }
-            }
+          "403": {
+            "description": "API key is not authorised to access this resource."
           },
           "404": {
             "description": "Merge job not found.",
