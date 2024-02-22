@@ -3576,6 +3576,10 @@
           "reason_text": {
             "type": "string",
             "description": "The reason provided for unsubscribing in the free-text field."
+          },
+          "customer_id": {
+            "type": "string",
+            "description": "The universal customer ID for this contact."
           }
         },
         "example": {
@@ -3584,7 +3588,8 @@
           "type": "preferences_centre",
           "timestamp": "2017-05-17 22:08:07+00",
           "reason": null,
-          "reason_text": null
+          "reason_text": null,
+          "customer_id": "7898734"
         }
       }
     }
