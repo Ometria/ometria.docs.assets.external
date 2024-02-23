@@ -354,28 +354,7 @@
         ],
         "summary": "List Collections",
         "description": "List contact collections along with counts of records in each collection",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items to return. Maximum 250.",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": "10"
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "description": "Index of first record.",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": "0"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Collection objects",
