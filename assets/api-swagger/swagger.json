@@ -756,38 +756,142 @@
         "tags": [
           "Profiles"
         ],
-        "summary": "Merge profiles with duplicate email and/or id",
-        "description": "Merge the profile on email and / or id",
+        "summary": "Merge profiles based on the provided identifiers.",
+        "description": "Merge customers_to_merge profiles into the survivor profile using the allowed identifiers (customer_id, profile_hash, email_address and phone_number).",
+        "parameters": [
+          {
+            "name": "Ometria-Account-Id",
+            "in": "header",
+            "description": "ID for the account in which to search for the profiles.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
-          "description": "profile to merge",
+          "description": "profiles to merge, customers_to_merge will be merged into survivor",
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "email of the profile required for merging"
-                  },
-                  "profile_id": {
-                    "type": "integer",
-                    "description": "the id of the profile required for merging (will match using email)"
-                  }
-                }
+                "$ref": "#/components/schemas/MergeProfiles"
               },
               "example": {
-                "email": "example@email.com"
+                "survivor": {
+                  "type": "email_address",
+                  "value": "survivor@email.com"
+                },
+                "customers_to_merge": [
+                  {
+                    "type": "customer_id",
+                    "value": "ABC123"
+                  },
+                  {
+                    "type": "profile_hash",
+                    "value": "27f4-26e69b-0000007b"
+                  },
+                  {
+                    "type": "email_address",
+                    "value": "customer@email.com"
+                  },
+                  {
+                    "type": "phone_number",
+                    "value": "+447123456789"
+                  }
+                ]
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "merge request accepted"
+          "202": {
+            "description": "Merge profile job placed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Status of the merge job."
+                    },
+                    "job_id": {
+                      "type": "integer",
+                      "description": "The id of the job that was placed."
+                    }
+                  }
+                },
+                "example": {
+                  "status": "Merge profile job placed",
+                  "job_id": 1234
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 400,
+                  "type": "about:blank",
+                  "detail": "Cannot merge a profile with itself",
+                  "title": "Bad Request"
+                }
+              }
+            }
           },
           "404": {
-            "description": "The profile could not be found"
+            "description": "Profile not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 404,
+                  "type": "about:blank",
+                  "detail": "Profile not found",
+                  "title": "Not Found"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Max in progress jobs per account reached.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 429,
+                  "type": "about:blank",
+                  "detail": "Too many merge jobs in progress",
+                  "title": "Too Many Requests"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 500,
+                  "type": "about:blank",
+                  "detail": "Internal Server Error",
+                  "title": "An error occurred"
+                }
+              }
+            }
           }
         }        
       }
@@ -3569,6 +3673,53 @@
           "reason": null,
           "reason_text": null,
           "customer_id": "7898734"
+        }
+      },
+      "MergeProfiles": {
+        "type": "object",
+        "properties": {
+          "survivor": {
+            "$ref": "#/components/schemas/ProfileIdentifier"
+          },
+          "customers_to_merge": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileIdentifier"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "uniqueItems": true
+          }
+        }
+      },
+      "ProfileIdentifier": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of profile identifier (customer_id, profile_hash, email_address or phone_number)."
+          },
+          "value": {
+            "type": "string",
+            "description": "Value of profile identifier."
+          }
+        }
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
         }
       }
     }
