@@ -758,17 +758,6 @@
         ],
         "summary": "Merge profiles based on the provided identifiers.",
         "description": "Merge customers_to_merge profiles into the survivor profile using the allowed identifiers (customer_id, profile_hash, email_address and phone_number).",
-        "parameters": [
-          {
-            "name": "Ometria-Account-Id",
-            "in": "header",
-            "description": "ID for the account in which to search for the profiles.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "description": "profiles to merge, customers_to_merge will be merged into survivor",
@@ -845,6 +834,9 @@
               }
             }
           },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
           "404": {
             "description": "Profile not found.",
             "content": {
@@ -873,6 +865,200 @@
                   "type": "about:blank",
                   "detail": "Too many merge jobs in progress",
                   "title": "Too Many Requests"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 500,
+                  "type": "about:blank",
+                  "detail": "Internal Server Error",
+                  "title": "An error occurred"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Profiles"
+        ],
+        "summary": "Get the status of merge jobs in a given account.",
+        "description": "Get the status of merge jobs in a given account.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The limit for pagination purposes.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset for pagination purposes.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The statuses of the merge jobs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "offset": {
+                      "type": "integer",
+                      "description": "The offset used for pagination."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The limit used for pagination."
+                    },
+                    "job_count": {
+                      "type": "integer",
+                      "description": "The number of merge jobs returned."
+                    },
+                    "total_job_count": {
+                      "type": "integer",
+                      "description": "The total number of merge jobs in the account."
+                    },
+                    "jobs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MergeProfileJobStatus"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "offset": 2,
+                  "limit": 10,
+                  "job_count": 3,
+                  "total_job_count": 5,
+                  "jobs": [
+                    {
+                      "job_id": 12,
+                      "status": "finished"
+                    },
+                    {
+                      "job_id": 13,
+                      "status": "failed"
+                    },
+                    {
+                      "job_id": 14,
+                      "status": "in_progress"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid limit or offset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 400,
+                  "type": "about:blank",
+                  "detail": "-1 is less than the minimum of 0",
+                  "title": "Bad Request"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
+          "500": {
+            "description": "An error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 500,
+                  "type": "about:blank",
+                  "detail": "Internal Server Error",
+                  "title": "An error occurred"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merge-profile/{job_id}": {
+      "get": {
+        "tags": [
+          "Profiles"
+        ],
+        "summary": "Get the status of a specific merge job.",
+        "description": "Get the status of a specific merge job.",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "description": "The id of the merge job.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The statuses of the merge jobs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MergeProfileJobStatus"
+                },
+                "example": {
+                  "job_id": 1234,
+                  "status": "finished"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
+          "404": {
+            "description": "Merge job not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "status": 404,
+                  "type": "about:blank",
+                  "detail": "Merge job 15 not found",
+                  "title": "Bad Request"
                 }
               }
             }
@@ -3702,6 +3888,24 @@
           "value": {
             "type": "string",
             "description": "Value of profile identifier."
+          }
+        }
+      },
+      "MergeProfileJobStatus": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "integer",
+            "description": "The id of the merge job."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the merge job.",
+            "enum": [
+              "in_progress",
+              "completed",
+              "failed"
+            ]
           }
         }
       },
