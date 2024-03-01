@@ -688,6 +688,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "The customer ID of the profile to fetch.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "query",
+            "description": "The phone number of the profile to fetch. Plus signs (+) should be swapped with %2b",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "profileHash",
+            "in": "query",
+            "description": "The profile hash of the profile to fetch.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
