@@ -918,8 +918,8 @@
         "tags": [
           "Profiles"
         ],
-        "summary": "Get the status of merge jobs in a given account.",
-        "description": "Get the status of merge jobs in a given account.",
+        "summary": "Get the status of merge jobs.",
+        "description": "Get the status of merge jobs.",
         "parameters": [
           {
             "name": "limit",
