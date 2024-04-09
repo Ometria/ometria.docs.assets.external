@@ -1106,7 +1106,7 @@
               }
             }
           }
-        }        
+        }
       }
     },
     "/lists": {
@@ -1493,7 +1493,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataDeletionRequest"
+                    "$ref": "#/components/schemas/DataDeletionGetResponse"
                   }
                 }
               }
@@ -1518,7 +1518,7 @@
               }
             }
           },
-          "description": "The email address of the individual who had requested anonymisation",
+          "description": "There are two available identifiers: email_address and customer_id.",
           "required": true
         },
         "responses": {
@@ -1527,7 +1527,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataDeletionRequest"
+                  "$ref": "#/components/schemas/DataDeletionPostResponse"
                 }
               }
             }
@@ -1562,7 +1562,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataDeletionRequest"
+                  "$ref": "#/components/schemas/DataDeletionGetResponse"
                 }
               }
             }
@@ -2037,9 +2037,22 @@
           "event": "list_enter"
         }
       },
-      "DataDeletionRequest": {
+      "DataDeletionPostResponse": {
         "type": "object",
-        "description": "Describes a GDPR related data anonymisation request",
+        "description": "Response to a GDPR-related data anonymisation request submission",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The request ID"
+          }
+        },
+        "example": {
+          "id": "a8c53a39-e0fc-462c-b5fa-907fe70a4174",
+        }
+      },
+      "DataDeletionGetResponse": {
+        "type": "object",
+        "description": "Describes a GDPR-related data anonymisation request",
         "properties": {
           "id": {
             "type": "string",
@@ -2076,7 +2089,7 @@
           },
           "identities": {
             "type": "array",
-            "description": "A list of hashed email addresses that represent the identities of individuals processed in this request.",
+            "description": "A list of hashed identifiers that represent the identities of individuals processed in this request.",
             "items": {
               "type": "string"
             }
@@ -2091,7 +2104,7 @@
           "comment": "Some comment",
           "identities": [
             {
-              "hashed_email": "3af31748a10ef8bd28ce7620c25fe18d@anonymous.ometria"
+              "hashed_identifier": "3af31748a10ef8bd28ce7620c25fe18d@anonymous.ometria"
             }
           ],
           "source": {
@@ -2106,11 +2119,15 @@
       },
       "DataDeletionSubmission": {
         "type": "object",
-        "description": "GDPR related data anonymisation request submission",
+        "description": "GDPR related data anonymisation request submission. One of the available identifiers must be provided (email_address or customer_id) but not both.",
         "properties": {
           "email_address": {
             "type": "string",
-            "description": "Email address of individual who requested anonymisation"
+            "description": "Email address of individual to be anonymised"
+          },
+          "customer_id": {
+            "type": "string",
+            "description": "Customer ID of individual to be anonymised"
           },
           "comment": {
             "type": "string",
