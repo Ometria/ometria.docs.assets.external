@@ -1893,7 +1893,7 @@
         "properties": {
           "string_custom_field": {
             "type": "string",
-            "description": "Any characters permitted, including accents and other character symbols.\nString fields have a 64 character limit."
+            "description": "Any characters permitted, including accents and other character symbols.\nString fields have a 512 character limit."
           },
           "boolean_custom_field": {
             "type": "boolean",
