@@ -105,6 +105,15 @@
                 "false"
               ]
             }
+          },
+          {
+            "name": "includeVariants",
+            "in": "query",
+            "description": "Product variants (or child products) for shippable SKUs.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -142,15 +151,6 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "includeVariants",
-            "in": "query",
-            "description": "Product variants (or child products) for shippable SKUs.",
-            "required": true,
-            "schema": {
-              "type": "boolean"
             }
           }
         ],
