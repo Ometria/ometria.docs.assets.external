@@ -110,7 +110,7 @@
             "name": "includeVariants",
             "in": "query",
             "description": "Product variants (or child products) for shippable SKUs.",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "boolean"
             }
