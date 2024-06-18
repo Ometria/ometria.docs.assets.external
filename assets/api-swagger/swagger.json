@@ -1743,7 +1743,7 @@
           },
           "timestamp_subscribed": {
             "type": "string",
-            "description": "The date and time the contact was 'acquired'. Only provide this if known.\nFollow ISO 8601 DateTime format with timezone offset YYYY-MM-DDThh:mm:ss+Z",
+            "description": "The date and time the contact was 'subscribed'. Only provide this if known.\nFollow ISO 8601 DateTime format with timezone offset YYYY-MM-DDThh:mm:ss+Z",
             "format": "date-time"
           },
           "timestamp_unsubscribed": {
