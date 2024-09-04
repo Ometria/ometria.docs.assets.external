@@ -1668,11 +1668,10 @@
       "Contact": {
         "title": "Contact",
         "type": "object",
-        "description": "Describes an individual Contact listing record.",
+        "description": "Describes an individual Contact listing record. At least one of the following are required to identify the customer (email, phone_number, customer_id)",
         "required": [
           "@type",
-          "id",
-          "email"
+          "id"
         ],
         "properties": {
           "@type": {
