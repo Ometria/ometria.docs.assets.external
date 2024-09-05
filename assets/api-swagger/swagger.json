@@ -778,7 +778,7 @@
           {
             "name": "profile_id",
             "in": "path",
-            "description": "The ID of the profile to fetch.",
+            "description": "The ID (hash) of the profile to fetch (eg 27f4-8337f0-002384af).",
             "required": true,
             "schema": {
               "type": "string"
@@ -3295,7 +3295,7 @@
           },
           "id": {
             "type": "string",
-            "description": "The public profile ID of this record such as 27f4-8337f0-002384af."
+            "description": "The ID of this profile record."
           },
           "email": {
             "type": "string",
