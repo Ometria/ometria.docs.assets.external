@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "title": "Ometria data API",
-    "description": "Welcome to the Ometria API reference.\n\n\nThe Ometria API is organized around the [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) methodology, and it uses resource-oriented URLs, and common HTTP response codes to indicate API errors. All requests are authenticated using an API key which can be obtained from your account settings.\n\n### HTTPS\n\nAll requests to the Ometria API MUST be carried out via HTTPS. API servers do not listen on unsecured HTTP ports to avoid the possibility of insecure information exchange.\n\n### Message encoding\n\nThe V2 Ometria API uses JSON encoding for all data exchanges and assumes UTF-8 character encoding throughout.\n\n### Rate limits\n\nThe Ometria API has a default rate limit of 4 requests per second per Ometria account. If you expect to exceed this limit, please contact us.\n\nIn the case of your application being rate limited, the HTTP code 429 (too many requests) will be returned. In this case your application should reduce the number of requests it is trying to send.\n\nNote that the asynchronous push API also has a maximum of 50,000 asynchronous import records. If you attempt to push more than this number of records in a short timeframe, you will also receive the HTTP 429 status code.",
+    "description": "Welcome to the Ometria API reference.\n\n\nThe Ometria API is organized around the [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) methodology, and it uses resource-oriented URLs, and common HTTP response codes to indicate API errors. All requests are authenticated using an API key which can be obtained from your account settings.\n\n### HTTPS\n\nAll requests to the Ometria API MUST be carried out via HTTPS. API servers do not listen on unsecured HTTP ports to avoid the possibility of insecure information exchange.\n\n### Message encoding\n\nThe V2 Ometria API uses JSON encoding for all data exchanges and assumes UTF-8 character encoding throughout.\n\n### Rate limits\n\nThe Ometria API has a default rate limit of 4 requests per second per Ometria account. The /push/ endpoint allows 8 requests per second per Ometria account. If you expect to exceed this limit, please contact us.\n\nIn the case of your application being rate limited, the HTTP code 429 (too many requests) will be returned. In this case your application should reduce the number of requests it is trying to send.",
     "contact": {
       "name": "Ometria",
       "email": "support@ometria.com",
@@ -674,7 +674,34 @@
           {
             "name": "updateSince",
             "in": "query",
-            "description": "Only return contacts that have been updated since this date.\nThis does not return contacts who have entered or exited a dynamic segment in that time.",
+            "description": "Only return contacts that have been updated since this date.",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "updateBefore",
+            "in": "query",
+            "description": "Only return contacts that have been updated before this date.",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "createdSince",
+            "in": "query",
+            "description": "Only return contacts that have been created since this date.",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "createdBefore",
+            "in": "query",
+            "description": "Only return contacts that have been created since this date.",
             "schema": {
               "type": "string",
               "format": "date"
@@ -751,7 +778,7 @@
           {
             "name": "profile_id",
             "in": "path",
-            "description": "The ID of the profile to fetch.",
+            "description": "The ID (hash) of the profile to fetch (eg 27f4-8337f0-002384af).",
             "required": true,
             "schema": {
               "type": "string"
@@ -1280,7 +1307,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Contact"
+                    "$ref": "#/components/schemas/Profile"
                   }
                 }
               }
@@ -3294,7 +3321,7 @@
           },
           "customer_id": {
             "type": "string",
-            "description": "The customer ID of this contact profile."
+            "description": "The customer ID of this contact profile in your system."
           },
           "firstname": {
             "type": "string",
@@ -3318,9 +3345,16 @@
           },
           "country": {
             "type": "string",
-            "description": "The country ID of this contact profile. Following ISO 3166-1 alpha-2.",
+            "description": "The country of this contact profile. Following ISO 3166-1 alpha-2.",
             "minLength": 2,
             "maxLength": 2
+          },
+          "country_id": {
+            "type": "string",
+            "description": "The country of this contact profile. Following ISO 3166-1 alpha-2.",
+            "minLength": 2,
+            "maxLength": 2,
+            "deprecated": true
           },
           "gender": {
             "type": "string",
@@ -3351,14 +3385,23 @@
             "type": "boolean",
             "description": "TRUE if this contact has explicitly opted in. FALSE if they have explicitly opted out. NULL otherwise."
           },
+          "timezone": {
+            "type": "string",
+            "description": "The timezone of the profile. Values defined in the <a href=\"https://www.iana.org/time-zones\" target=\"blank\">tz database</a>."
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "The contact's mobile phone number, in E.164/International format (e.g. starting \"+447...\")"
+          },
+          "phone_number_country": {
+            "type": "string",
+            "description": "The contact's mobile phone number country code, in ISO 3166-1 alpha-2 format (e.g. \"GB\")"
+          },
           "stats": {
             "$ref": "#/components/schemas/ProfileStats"
           },
           "dates": {
             "$ref": "#/components/schemas/ProfileDates"
-          },
-          "identities": {
-            "$ref": "#/components/schemas/ProfileIdentities"
           },
           "lists": {
             "$ref": "#/components/schemas/ProfileLists"
@@ -3403,14 +3446,12 @@
             "last_seen": "2015-02-01T05:44:55+00:00",
             "first_purchase": "2015-02-01T05:44:55+00:00",
             "last_purchase": "2015-02-01T05:44:55+00:00",
-            "acquired": "2014-11-01T15:34:35+00:00"
+            "predicted_next_purchase": "2015-03-01T05:44:55+00:00",
+            "acquired": "2014-11-07T15:34:35+00:00",
+            "account_created": "2014-11-07T15:34:35+00:00",
+            "marketing_optin": "2014-11-09T15:34:35+00:00",
+            "marketing_optout": null
           },
-          "identities": [
-            {
-              "type": "email",
-              "id": "bob22@example.com"
-            }
-          ],
           "preferred_lang": "en-GB"
         }
       },
@@ -3458,6 +3499,16 @@
         "type": "object",
         "description": "Contains date / time information of a profile",
         "properties": {
+          "account_created": {
+            "type": "string",
+            "description": "The date time when this contact was created with given customer_id based on `timestamp_acquired` of the same listing.",
+            "format": "date-time"
+          },
+          "acquired": {
+            "type": "string",
+            "description": "The date time when this contact was acquired based on the earliest `timestamp_acquired`.",
+            "format": "date-time"
+          },
           "first_seen": {
             "type": "string",
             "description": "The date time when this contact was first seen.",
@@ -3478,9 +3529,9 @@
             "description": "The date time when this contact last placed an order.",
             "format": "date-time"
           },
-          "acquired": {
+          "predicted_next_purchase": {
             "type": "string",
-            "description": "The date time when this contact was acquired.",
+            "description": "The date time of the projected next purchase based on the profile's average order gap.",
             "format": "date-time"
           },
           "marketing_optin": {
@@ -3499,31 +3550,12 @@
           "last_seen": "2015-02-01T05:44:55+00:00",
           "first_purchase": "2015-02-01T05:44:55+00:00",
           "last_purchase": "2015-02-01T05:44:55+00:00",
+          "predicted_next_purchase": "2015-03-01T05:44:55+00:00",
           "acquired": "2014-11-07T15:34:35+00:00",
+          "account_created": "2014-11-07T15:34:35+00:00",
           "marketing_optin": "2014-11-09T15:34:35+00:00",
           "marketing_optout": null
         }
-      },
-      "ProfileIdentities": {
-        "type": "array",
-        "description": "Contains identity information used to construct the profile",
-        "items": {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            }
-          }
-        },
-        "example": [
-          {
-            "type": "email",
-            "id": "bob22@example.com"
-          }
-        ]
       },
       "ProfileLists": {
         "type": "array",
