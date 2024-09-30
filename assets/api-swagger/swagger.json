@@ -203,6 +203,24 @@
             }
           },
           {
+            "name": "customer_id",
+            "in": "query",
+            "description": "Find all orders by customer.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Find all orders by customer.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "updateBefore",
             "in": "query",
             "description": "Find all orders updated before a certain date.",
