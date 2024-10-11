@@ -1688,11 +1688,11 @@
           },
           "email": {
             "type": "string",
-            "description": "The contact's email address, max length: 255, lower case.\nIf left empty this field will be set to 'null'."
+            "description": "The contact's email address, max length: 255, lower case.\nIf left empty this field will be set to 'null'.\nYou must include either `email`, `phone_number` or `customer_id` in every record."
           },
           "phone_number": {
             "type": "string",
-            "description": "The contact's mobile phone number, in E.164/International format (e.g. starting \"+447...\") or National format (without the country code prefix, please note that country_id is required in order to validate the phone number in this format)."
+            "description": "The contact's mobile phone number, in E.164/International format (e.g. starting \"+447...\") or National format (without the country code prefix, please note that country_id is required in order to validate the phone number in this format).\nYou must include either `email`, `phone_number` or `customer_id` in every record."
           },
           "marketing_optin": {
             "type": "string",
@@ -1705,7 +1705,7 @@
           },
           "customer_id": {
             "type": "string",
-            "description": "Your universal customer ID for this contact, if applicable. max length: 255.\nOnly use this value if the customer ID is persistent across all your systems (that send data to Ometria)."
+            "description": "Your universal customer ID for this contact, if applicable. max length: 255.\nOnly use this value if the customer ID is persistent across all your systems (that send data to Ometria).\nYou must include either `email`, `phone_number` or `customer_id` in every record."
           },
           "@add_to_lists": {
             "type": "array",
