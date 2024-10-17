@@ -1563,7 +1563,7 @@
               }
             }
           },
-          "description": "There are two available identifiers: email_address and customer_id.",
+          "description": "There are three available identifiers: email_address, phone_number and customer_id.",
           "required": true
         },
         "responses": {
@@ -2164,7 +2164,7 @@
       },
       "DataDeletionSubmission": {
         "type": "object",
-        "description": "GDPR related data anonymisation request submission. One of the available identifiers must be provided (email_address or customer_id) but not both.",
+        "description": "GDPR related data anonymisation request submission. Only one of the available identifiers must be provided (email_address or customer_id or phone_number).",
         "properties": {
           "email_address": {
             "type": "string",
@@ -2173,6 +2173,10 @@
           "customer_id": {
             "type": "string",
             "description": "Customer ID of individual to be anonymised"
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "Phone number of individual to be anonymised, in E.164/International format (e.g. starting \"+447...\")"
           },
           "comment": {
             "type": "string",
