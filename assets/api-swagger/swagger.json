@@ -1693,7 +1693,7 @@
           },
           "phone_number": {
             "type": "string",
-            "description": "The contact's mobile phone number, in E.164/International format (e.g. starting \"+447...\")"
+            "description": "The contact's mobile phone number, in E.164/International format (e.g. starting \"+447...\") or National format (without the country code prefix, please note that country_id is required in order to validate the phone number in this format)."
           },
           "marketing_optin": {
             "type": "string",
