@@ -1563,7 +1563,7 @@
               }
             }
           },
-          "description": "There are three available identifiers: email_address, customer_id and phone_number.",
+          "description": "There are three available identifiers: email_address, phone_number and customer_id.",
           "required": true
         },
         "responses": {
