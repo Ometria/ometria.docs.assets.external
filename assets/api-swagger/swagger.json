@@ -1621,7 +1621,7 @@
         }
       }
     },
-    "/v2/public/custom_fields": {
+    "/v2/custom_fields": {
       "get": {
         "tags": [
           "Custom Fields"
@@ -1905,7 +1905,7 @@
         }
       }
     },
-    "/v2/public/custom_fields/{category}/{id}": {
+    "/v2/custom_fields/{category}/{id}": {
       "delete": {
         "tags": [
           "Custom Fields"
