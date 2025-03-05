@@ -1798,7 +1798,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "The created custom field.",
             "content": {
               "application/json": {
