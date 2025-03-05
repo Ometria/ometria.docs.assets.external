@@ -1877,7 +1877,7 @@
             }
           },
           "404": {
-            "description": "Custom field with id 'example_id' not found in category 'contact'.",
+            "description": "No custom field with the provided id and category found",
             "content": {
               "application/json": {
                 "example": {
@@ -1948,6 +1948,19 @@
                 },
                 "schema": {
                   "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No custom field with the provided id and category found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Custom field with id 'example_id' not found in category 'contact'."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
