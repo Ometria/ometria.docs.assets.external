@@ -1620,6 +1620,366 @@
           }
         }
       }
+    },
+    "/custom_fields": {
+      "get": {
+        "tags": [
+          "Custom Fields"
+        ],
+        "summary": "List Custom Fields",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/CustomFieldCategory"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter for custom fields in the given category.",
+              "title": "Category"
+            },
+            "description": "Filter for custom fields in the given category."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/CustomFieldType"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter for custom fields of the given type.",
+              "title": "Type"
+            },
+            "description": "Filter for custom fields of the given type."
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/CustomFieldStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter for custom fields with the given status.",
+              "title": "Status"
+            },
+            "description": "Filter for custom fields with the given status."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Search for custom fields with the given label or id.",
+              "title": "Search"
+            },
+            "description": "Search for custom fields with the given label or id."
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/CustomFieldSortBy"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Sort custom fields by the given field.",
+              "title": "Sort By"
+            },
+            "description": "Sort custom fields by the given field."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list of custom fields.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomFieldListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid request."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Internal Server error."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Custom Fields"
+        ],
+        "summary": "Create Custom Field",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomFieldCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created custom field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomFieldResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid request."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Internal Server error."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Custom Fields"
+        ],
+        "summary": "Update Custom Field",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomFieldUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated custom field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomFieldResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid request."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No custom field with the provided id and category found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Custom field with id 'example_id' not found in category 'contact'."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Internal Server error."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/custom_fields/{category}/{id}": {
+      "delete": {
+        "tags": [
+          "Custom Fields"
+        ],
+        "summary": "Delete Custom Field",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CustomFieldCategory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid request."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No custom field with the provided id and category found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Custom field with id 'example_id' not found in category 'contact'."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Internal Server error."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "security": [
@@ -4022,6 +4382,354 @@
             "type": "string"
           }
         }
+      },
+      "CustomFieldCategory": {
+        "type": "string",
+        "enum": [
+          "contact",
+          "order"
+        ],
+        "title": "CustomFieldCategory"
+      },
+      "CustomFieldResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^\\S+$",
+            "title": "Id",
+            "description": "The identifier of the custom field",
+            "example": "country_of_origin"
+          },
+          "category": {
+            "$ref": "#/components/schemas/CustomFieldCategory",
+            "description": "The category of the custom field",
+            "example": "contact"
+          },
+          "type": {
+            "$ref": "#/components/schemas/CustomFieldType",
+            "description": "The type of the custom field. The 'date' type can only be used with the 'contact' category.",
+            "example": "string"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Title",
+            "description": "The title of the custom field",
+            "example": "Custom Field"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CustomFieldStatus",
+            "description": "The status of the custom field",
+            "example": "active"
+          },
+          "date_created": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Created",
+            "description": "The date the custom field was created",
+            "example": "2024-07-15T11:45:13+00:00"
+          },
+          "created_by": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created By",
+            "description": "The user who created the custom field",
+            "example": 1
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "type",
+          "title",
+          "status",
+          "date_created",
+          "created_by"
+        ],
+        "title": "CustomFieldResponse"
+      },
+      "CustomFieldStatus": {
+        "type": "string",
+        "enum": [
+          "active",
+          "archived"
+        ],
+        "title": "CustomFieldStatus"
+      },
+      "CustomFieldType": {
+        "type": "string",
+        "enum": [
+          "string",
+          "integer",
+          "decimal",
+          "date",
+          "blob",
+          "list of string"
+        ],
+        "title": "CustomFieldType"
+      },
+      "CustomFieldUpdate": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^\\S+$",
+            "title": "Id",
+            "description": "The identifier of the custom field",
+            "example": "country_of_origin"
+          },
+          "category": {
+            "$ref": "#/components/schemas/CustomFieldCategory",
+            "description": "The category of the custom field",
+            "example": "contact"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "The title of the custom field",
+            "example": "Custom Field"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CustomFieldStatus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The status of the custom field",
+            "example": "active"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "category"
+        ],
+        "title": "CustomFieldUpdate"
+      },
+      "CustomFieldCreate": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^\\S+$",
+            "title": "Id",
+            "description": "The identifier of the custom field",
+            "example": "country_of_origin"
+          },
+          "category": {
+            "$ref": "#/components/schemas/CustomFieldCategory",
+            "description": "The category of the custom field",
+            "example": "contact"
+          },
+          "type": {
+            "$ref": "#/components/schemas/CustomFieldType",
+            "description": "The type of the custom field. The 'date' type can only be used with the 'contact' category.",
+            "example": "string"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Title",
+            "description": "The title of the custom field",
+            "example": "Custom Field"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "type",
+          "title"
+        ],
+        "title": "CustomFieldCreate"
+      },
+      "CustomFieldListResponse": {
+        "properties": {
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/CustomFieldResponse"
+            },
+            "type": "array",
+            "title": "Fields",
+            "description": "The list of paginated objects."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Offset",
+            "description": "The offset value applied for pagination.",
+            "example": 0
+          },
+          "page_size": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Page Size",
+            "description": "The actual number of objects in the current page.",
+            "example": 1
+          },
+          "total_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total Count",
+            "description": "The total number of objects for the account.",
+            "example": 1
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Limit",
+            "description": "The limit number of custom fields allowed",
+            "example": 50
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fields",
+          "offset",
+          "page_size",
+          "total_count",
+          "limit"
+        ],
+        "title": "CustomFieldListResponse"
+      },
+      "CustomFieldSortBy": {
+        "type": "string",
+        "enum": [
+          "created_by",
+          "-created_by",
+          "date_created",
+          "-date_created",
+          "category",
+          "-category",
+          "type",
+          "-type",
+          "status",
+          "-status",
+          "id",
+          "-id",
+          "title",
+          "-title"
+        ],
+        "title": "CustomFieldSortBy"
+      },
+      "ValidationErrorResponse": {
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ValidationErrorDetailItem"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Detail",
+            "description": "The detail(s) giving more context why the request failed."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ValidationErrorResponse"
+      },
+      "ValidationErrorDetailItem": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "The type of validation error."
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Loc",
+            "description": "The location of the field that caused the validation error."
+          },
+          "msg": {
+            "type": "string",
+            "title": "Msg",
+            "description": "The error message."
+          },
+          "input": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input",
+            "description": "The input in the request that caused the validation error."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "type",
+          "loc",
+          "msg"
+        ],
+        "title": "ValidationErrorDetailItem"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "description": "The detail giving more context why the request failed."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ErrorResponse"
       }
     }
   },
