@@ -1656,12 +1656,10 @@
             "in": "query",
             "required": false,
             "schema": {
+              "nullable": true,
               "anyOf": [
                 {
                   "$ref": "#/components/schemas/CustomFieldCategory"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "description": "Filter for custom fields in the given category.",
@@ -1674,12 +1672,10 @@
             "in": "query",
             "required": false,
             "schema": {
+              "nullable": true,
               "anyOf": [
                 {
                   "$ref": "#/components/schemas/CustomFieldType"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "description": "Filter for custom fields of the given type.",
@@ -1692,12 +1688,10 @@
             "in": "query",
             "required": false,
             "schema": {
+              "nullable": true,
               "anyOf": [
                 {
                   "$ref": "#/components/schemas/CustomFieldStatus"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "description": "Filter for custom fields with the given status.",
@@ -1710,12 +1704,10 @@
             "in": "query",
             "required": false,
             "schema": {
+              "nullable": true,
               "anyOf": [
                 {
                   "type": "string"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "description": "Search for custom fields with the given label or id.",
@@ -1728,12 +1720,10 @@
             "in": "query",
             "required": false,
             "schema": {
+              "nullable": true,
               "anyOf": [
                 {
                   "$ref": "#/components/schemas/CustomFieldSortBy"
-                },
-                {
-                  "type": "null"
                 }
               ],
               "description": "Sort custom fields by the given field.",
@@ -4424,13 +4414,11 @@
             "example": "active"
           },
           "date_created": {
+            "nullable": true,
             "anyOf": [
               {
                 "type": "string",
                 "format": "date-time"
-              },
-              {
-                "type": "null"
               }
             ],
             "title": "Date Created",
@@ -4438,12 +4426,10 @@
             "example": "2024-07-15T11:45:13+00:00"
           },
           "created_by": {
+            "nullable": true,
             "anyOf": [
               {
                 "type": "integer"
-              },
-              {
-                "type": "null"
               }
             ],
             "title": "Created By",
@@ -4500,13 +4486,11 @@
             "example": "contact"
           },
           "title": {
+            "nullable": true,
             "anyOf": [
               {
                 "type": "string",
                 "maxLength": 64
-              },
-              {
-                "type": "null"
               }
             ],
             "title": "Title",
@@ -4514,12 +4498,10 @@
             "example": "Custom Field"
           },
           "status": {
+            "nullable": true,
             "anyOf": [
               {
                 "$ref": "#/components/schemas/CustomFieldStatus"
-              },
-              {
-                "type": "null"
               }
             ],
             "description": "The status of the custom field",
@@ -4695,12 +4677,10 @@
             "description": "The error message."
           },
           "input": {
+            "nullable": true,
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "type": "null"
               }
             ],
             "title": "Input",
