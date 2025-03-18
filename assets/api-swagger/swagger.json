@@ -1997,7 +1997,6 @@
               "items": {
                   "type": "string",
                   "enum": [
-                      "created",
                       "pending",
                       "cancelled",
                       "completed"
@@ -4923,7 +4922,6 @@
             "title": "Status",
             "description": "The current status of the translation request.",
             "enum": [
-                "created",
                 "pending",
                 "cancelled",
                 "completed"
@@ -5012,6 +5010,11 @@
       },
       "TranslationSubmit": {
         "properties": {
+          "request_id": {
+            "type": "integer",
+            "title": "Request ID",
+            "description": "The ID of the translation request."
+          },
           "language": {
             "type": "string",
             "title": "Language",
