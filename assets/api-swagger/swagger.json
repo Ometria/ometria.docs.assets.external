@@ -2111,6 +2111,46 @@
         }
       }
     },
+    "/translations/requests/{request_id}/preview": {
+      "get": {
+        "tags": [
+          "Translation Requests"
+        ],
+        "summary": "Get translation request template preview in source language.",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the translation request.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Translation request details.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
+          "404": {
+            "description": "Translation request not found."
+          },
+          "500": {
+            "description": "An error occurred."
+          }
+        }
+      }
+    },
     "/translations/submit": {
       "post": {
         "tags": [
