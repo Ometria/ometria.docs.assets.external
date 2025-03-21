@@ -5027,7 +5027,6 @@
             "title": "Status",
             "description": "The current status of the translation request.",
             "enum": [
-                "created",
                 "pending",
                 "cancelled",
                 "completed"
