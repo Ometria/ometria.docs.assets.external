@@ -2704,6 +2704,7 @@
           },
           "lineitems": [
             {
+              "id": "abc-123_4",
               "product_id": "SS14-059493",
               "sku": "SS14-059493-S5",
               "quantity": 2,
@@ -2795,6 +2796,10 @@
           "unit_price"
         ],
         "properties": {
+          "id": {
+            "type": "string",
+            "description": "A persistent unique ID for the lineitem allowing it to be referenced/altered when merging orders.\nMax length: 64. IDs over this length will fail validation."
+          },
           "product_id": {
             "type": "string",
             "description": "The ID of the product."
@@ -2972,6 +2977,10 @@
                 "totals"
               ],
               "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "A persistent unique ID for the lineitem allowing it to be referenced/altered when merging orders.\nMax length: 64. IDs over this length will fail validation."
+                },
                 "product_id": {
                   "type": "string",
                   "description": "The ID of the product in this line item, max length: 255."
@@ -3134,6 +3143,7 @@
           },
           "lineitems": [
             {
+              "id": "abc-123_4",
               "product_id": "SS14-059493",
               "sku": "SS14-059493-S5",
               "quantity": 2,
