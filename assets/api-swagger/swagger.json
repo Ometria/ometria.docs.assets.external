@@ -2170,7 +2170,22 @@
         },
         "responses": {
           "200": {
-            "description": "Translation submitted successfully."
+            "description": "Translation submitted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Translations submitted"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request."
