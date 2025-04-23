@@ -2243,13 +2243,13 @@
         "type": "apiKey",
         "name": "X-Ometria-Auth",
         "in": "header",
-        "description": "Ometria API key which can be obtained from your Ometria account administrator. **Note**: The API-Key must have the scope `read:translations`."
+        "description": "Ometria API key which can be obtained from your Ometria account administrator. **Note**: The API key must have the scope `read:translations`."
       },
       "apiKeyWriteTranslations": {
         "type": "apiKey",
         "name": "X-Ometria-Auth",
         "in": "header",
-        "description": "Ometria API key which can be obtained from your Ometria account administrator. **Note**: The API-Key must have the scope `write:translations`."
+        "description": "Ometria API key which can be obtained from your Ometria account administrator. **Note**: The API key must have the scope `write:translations`."
       }
     },
     "schemas": {
