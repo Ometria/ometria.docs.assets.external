@@ -1970,6 +1970,250 @@
           }
         }
       }
+    },
+    "/translations/requests": {
+      "get": {
+        "tags": [
+          "Translation Requests"
+        ],
+        "summary": "List translation requests.",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "query",
+            "required": false,
+            "description": "The id of the translation request.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Get translation requests that has one of the following statuses.",
+            "schema": {
+              "type": "array",
+              "items": {
+                  "type": "string",
+                  "enum": [
+                      "pending",
+                      "cancelled",
+                      "completed"
+                  ]
+              }
+            }
+          },
+          {
+            "name": "since_created",
+            "in": "query",
+            "required": false,
+            "description": "Get translation requests created since this timestamp, in ISO 8601 format.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "since_updated",
+            "in": "query",
+            "required": false,
+            "description": "Get translation requests updated since this timestamp, in ISO 8601 format.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of records to fetch. Maximum 50.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The index of the first record to fetch.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "security": [
+          {"apiKeyReadTranslations": []}
+        ],
+        "responses": {
+          "200": {
+            "description": "List of translation requests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TranslationRequest"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request."
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
+          "500": {
+            "description": "An error occurred."
+          }
+        }
+      }
+    },
+    "/translations/requests/{request_id}": {
+      "get": {
+        "tags": [
+          "Translation Requests"
+        ],
+        "summary": "Get translation request details.",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the translation request.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "security": [
+          {"apiKeyReadTranslations": []}
+        ],
+        "responses": {
+          "200": {
+            "description": "Translation request details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TranslationRequestDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
+          "404": {
+            "description": "Translation request not found."
+          },
+          "500": {
+            "description": "An error occurred."
+          }
+        }
+      }
+    },
+    "/translations/requests/{request_id}/preview": {
+      "get": {
+        "tags": [
+          "Translation Requests"
+        ],
+        "summary": "Get translation request template preview in source language.",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the translation request.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "security": [
+          {"apiKeyReadTranslations": []}
+        ],
+        "responses": {
+          "200": {
+            "description": "Translation request details.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
+          "404": {
+            "description": "Translation request not found."
+          },
+          "500": {
+            "description": "An error occurred."
+          }
+        }
+      }
+    },
+    "/translations/submit": {
+      "post": {
+        "tags": [
+          "Translation Requests"
+        ],
+        "summary": "Submit a translation for a pending translation request.",
+        "security": [
+          {"apiKeyWriteTranslations": []}
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TranslationSubmit"
+              }
+            }
+          },
+          "description": "Translation for the pending translation request.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Translation submitted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Translations submitted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request."
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
+          "404": {
+            "description": "Translation request not found."
+          },
+          "500": {
+            "description": "An error occurred."
+          }
+        }
+
+      }
     }
   },
   "security": [
@@ -1994,6 +2238,18 @@
         "name": "X-Ometria-Auth",
         "in": "header",
         "description": "Ometria API key which can be obtained from your Ometria account administrator"
+      },
+      "apiKeyReadTranslations": {
+        "type": "apiKey",
+        "name": "X-Ometria-Auth",
+        "in": "header",
+        "description": "Ometria API key which can be obtained from your Ometria account administrator. **Note**: The API key must have the scope `read:translations`."
+      },
+      "apiKeyWriteTranslations": {
+        "type": "apiKey",
+        "name": "X-Ometria-Auth",
+        "in": "header",
+        "description": "Ometria API key which can be obtained from your Ometria account administrator. **Note**: The API key must have the scope `write:translations`."
       }
     },
     "schemas": {
@@ -4710,6 +4966,151 @@
           "detail"
         ],
         "title": "ErrorResponse"
+      },
+      "TranslationRequest": {
+        "properties": {
+          "request_id": {
+              "type": "string",
+              "title": "Request ID",
+              "description": "The ID of the translation request."
+          },
+          "source_lang": {
+            "type": "string",
+            "title": "Source Language",
+            "description": "The language code of the translation source language."
+          },
+          "target_lang": {
+            "type": "string",
+            "title": "Target Language",
+            "description": "The language code of the translation target language."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created Timestamp",
+            "description": "The date and time the translation request was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated Timestamp",
+            "description": "The date and time the translation request was last updated."
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "The current status of the translation request.",
+            "enum": [
+                "pending",
+                "cancelled",
+                "completed"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "source_lang",
+          "target_lang",
+          "created_at",
+          "updated_at",
+          "status"
+        ],
+        "title": "TranslationRequest"
+      },
+      "TranslationRequestDetails": {
+        "properties": {
+          "source_lang": {
+            "type": "string",
+            "title": "Source Language",
+            "description": "The language code of the translation source language."
+          },
+          "target_lang": {
+            "type": "string",
+            "title": "Target Language",
+            "description": "The language code of the translation target language."
+          },
+          "source_translations": {
+            "type": "object",
+            "title": "Source Translations",
+            "description": "The source language translations."
+          },
+          "target_translations": {
+            "type": "object",
+            "title": "Target Translations",
+            "description": "The target language translations."
+          },
+          "translation_tags": {
+            "type": "array",
+              "items": {
+                  "type": "string"
+              },
+            "title": "Translation Tags",
+            "description": "The tags that are requested for translation from source to target language."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created Timestamp",
+            "description": "The date and time the translation request was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated Timestamp",
+            "description": "The date and time the translation request was last updated."
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "The current status of the translation request.",
+            "enum": [
+                "pending",
+                "cancelled",
+                "completed"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_lang",
+          "target_lang",
+          "source_translations",
+          "target_translations",
+          "translation_tags",
+          "created_at",
+          "updated_at",
+          "status"
+        ],
+        "title": "TranslationRequestDetails"
+      },
+      "TranslationSubmit": {
+        "properties": {
+          "request_id": {
+            "type": "integer",
+            "title": "Request ID",
+            "description": "The ID of the translation request."
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "description": "The language code of submitted translations."
+          },
+          "translations": {
+            "type": "object",
+            "title": "Translations",
+            "description": "Submitted translations."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "language",
+          "translations"
+        ],
+        "title": "TranslationSubmit"
       }
     }
   },
