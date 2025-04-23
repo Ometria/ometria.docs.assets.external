@@ -2045,6 +2045,9 @@
             }
           }
         ],
+        "security": [
+          {"apiKeyWithTranslationReadScope": []}
+        ],
         "responses": {
           "200": {
             "description": "List of translation requests.",
@@ -2088,6 +2091,9 @@
             }
           }
         ],
+        "security": [
+          {"apiKeyWithTranslationReadScope": []}
+        ],
         "responses": {
           "200": {
             "description": "Translation request details.",
@@ -2128,6 +2134,9 @@
             }
           }
         ],
+        "security": [
+          {"apiKeyWithTranslationReadScope": []}
+        ],
         "responses": {
           "200": {
             "description": "Translation request details.",
@@ -2157,6 +2166,9 @@
           "Translation Requests"
         ],
         "summary": "Submit a translation for a pending translation request.",
+        "security": [
+          {"apiKeyWithTranslationWriteScope": []}
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2226,6 +2238,18 @@
         "name": "X-Ometria-Auth",
         "in": "header",
         "description": "Ometria API key which can be obtained from your Ometria account administrator"
+      },
+      "apiKeyWithTranslationReadScope": {
+        "type": "apiKey",
+        "name": "X-Ometria-Auth",
+        "in": "header",
+        "description": "Ometria API key which can be obtained from your Ometria account administrator. **Note**: The API-Key must have the scope `read:translations`."
+      },
+      "apiKeyWithTranslationWriteScope": {
+        "type": "apiKey",
+        "name": "X-Ometria-Auth",
+        "in": "header",
+        "description": "Ometria API key which can be obtained from your Ometria account administrator. **Note**: The API-Key must have the scope `write:translations`."
       }
     },
     "schemas": {
