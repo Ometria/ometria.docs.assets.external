@@ -2365,6 +2365,14 @@
             "description": "The contact's date of birth.\nFollowing ISO 8601 date format YYYY-MM-DD.",
             "format": "date"
           },
+          "postalcode": {
+            "type": "string",
+            "description": "The contact's postalcode"
+          },
+          "city": {
+            "type": "string",
+            "description": "The contact's city"
+          },
           "country_id": {
             "type": "string",
             "description": "The contact's country, must be 2 characters, upper case, e.g. 'GB'.\nFollow ISO 3166-1 alpha-2.\nIf you exceed the character limit this field will pass validation but appear truncated in Ometria.\nIf left empty this field will be set to 'null'.",
@@ -2453,6 +2461,8 @@
           "gender": "m",
           "date_of_birth": "1985-01-05",
           "marketing_optin": "EXPLICITLY_OPTEDIN",
+          "postalcode": "SW1A 1AA",
+          "city": "London",
           "country_id": "GB",
           "properties": {
             "nickname": "Johnny",
