@@ -2365,7 +2365,7 @@
             "description": "The contact's date of birth.\nFollowing ISO 8601 date format YYYY-MM-DD.",
             "format": "date"
           },
-          "postalcode": {
+          "postcode": {
             "type": "string",
             "description": "The contact's postalcode"
           },
