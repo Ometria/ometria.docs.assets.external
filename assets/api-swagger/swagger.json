@@ -2461,7 +2461,7 @@
           "gender": "m",
           "date_of_birth": "1985-01-05",
           "marketing_optin": "EXPLICITLY_OPTEDIN",
-          "postalcode": "SW1A 1AA",
+          "postcode": "SW1A 1AA",
           "city": "London",
           "country_id": "GB",
           "properties": {
