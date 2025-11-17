@@ -2936,7 +2936,8 @@
           "customer": {
             "email": "john.smith@example.com",
             "firstname": "John",
-            "lastname": "Smith"
+            "lastname": "Smith",
+            "phone_number": "+447812123456"
           },
           "status": "complete",
           "is_valid": true,
@@ -3043,6 +3044,10 @@
           "lastname": {
             "type": "string",
             "description": "The customer's last name, max length: 64."
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "The customer's phone number, in E.164/International format (e.g. starting \"+447...\")"
           }
         },
         "example": {
