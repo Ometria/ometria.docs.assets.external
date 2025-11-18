@@ -2529,6 +2529,10 @@
             "type": "string",
             "description": "The email of the contact record on which to trigger this custom event, max length: 255, lower case.\nIf left empty this field will be set to 'null'."
           },
+          "identity_phone_number": {
+            "type": "string",
+            "description": "The phone_number of the contact record on which to trigger this custom event, in E.164/International format (e.g. starting \"+447...\").\nIf left empty this field will be set to 'null'."
+          },
           "identity_account_id": {
             "type": "string",
             "description": "The <a href=\"https://ometria-api-reference.readme.io/docs/contacts-endpoint#customer-ids\" target=\"blank\">contact ID</a> of the contact record on which to trigger this custom event."
@@ -2544,6 +2548,7 @@
           },
           "profile_id": "xxxxx",
           "identity_email": "",
+          "identity_phone_number": "+447812123456",
           "identity_account_id": ""
         }
       },
