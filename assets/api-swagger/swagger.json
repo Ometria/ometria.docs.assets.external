@@ -36,6 +36,9 @@
                       "$ref": "#/components/schemas/Order"
                     },
                     {
+                      "$ref": "#/components/schemas/OrderExtended"
+                    },
+                    {
                       "$ref": "#/components/schemas/Product"
                     }
                   ]
