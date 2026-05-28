@@ -832,7 +832,7 @@
           "Profiles"
         ],
         "summary": "Merge profiles based on the provided identifiers.",
-        "description": "Merge customers_to_merge profiles into the survivor profile using the allowed identifiers (customer_id, profile_hash, email_address and phone_number).",
+        "description": "Merge customers_to_merge profiles into the survivor profile. Identifiers supplied here can be any identifier defined in your account's identity resolution configuration (e.g. `customer_id`, `profile_hash`, `email_address`, `phone_number`, or any custom extra identifier such as `loyalty_id`).",
         "requestBody": {
           "required": true,
           "description": "profiles to merge, customers_to_merge will be merged into survivor",
@@ -4742,7 +4742,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "description": "Type of profile identifier (customer_id, profile_hash, email_address or phone_number)."
+            "description": "Type of profile identifier. Any identifier defined in your account's identity resolution configuration is accepted (e.g. `customer_id`, `profile_hash`, `email_address`, `phone_number`, or any custom extra identifier such as `loyalty_id`)."
           },
           "value": {
             "type": "string",
