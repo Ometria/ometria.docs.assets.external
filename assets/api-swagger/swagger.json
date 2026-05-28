@@ -2274,10 +2274,38 @@
           "count": 43540
         }
       },
+      "ExtraIdentifier": {
+        "title": "Extra Identifier",
+        "type": "object",
+        "description": "An additional identifier for a record, used to attach non-standard customer or record IDs (e.g. loyalty programme IDs, external CRM IDs). Records may carry multiple extra identifiers.",
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The identifier type label. Must contain only lowercase letters and underscores (regex `^[a-z_]+$`), 1-255 characters. Will be coerced to lowercase on ingestion.",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[a-z_]+$",
+            "example": "loyalty_id"
+          },
+          "value": {
+            "type": "string",
+            "description": "The identifier value (free-form string).",
+            "example": "LOY-7898734"
+          }
+        },
+        "example": {
+          "type": "loyalty_id",
+          "value": "LOY-7898734"
+        }
+      },
       "Contact": {
         "title": "Contact",
         "type": "object",
-        "description": "Describes an individual Contact listing record. At least one of the following are required to identify the customer (email, phone_number, customer_id)",
+        "description": "Describes an individual Contact listing record. At least one of the following are required to identify the customer: `email`, `customer_id`, `phone_number`, or `extra_identifiers` (any one entry satisfies the requirement).",
         "required": [
           "@type",
           "id"
@@ -2297,11 +2325,11 @@
           },
           "email": {
             "type": "string",
-            "description": "The contact's email address, max length: 255, lower case.\nIf left empty this field will be set to 'null'.\nYou must include either `email` or `customer_id` in every record. Some retailers can also use the `phone_number` field - speak to your Customer Success Representative if you're unsure."
+            "description": "The contact's email address, max length: 255, lower case.\nIf left empty this field will be set to 'null'.\nYou must include either `email` or `customer_id` in every record. Some retailers can also use the `phone_number` or `extra_identifiers` field - speak to your Customer Success Representative if you're unsure."
           },
           "phone_number": {
             "type": "string",
-            "description": "The contact's mobile phone number, in E.164/International format (e.g. starting \"+447...\") or National format (without the country code prefix, please note that country_id is required in order to validate the phone number in this format).\nYou must include either `email` or `customer_id` in every record. Some retailers can also use the `phone_number` field - speak to your Customer Success Representative if you're unsure."
+            "description": "The contact's mobile phone number, in E.164/International format (e.g. starting \"+447...\") or National format (without the country code prefix, please note that country_id is required in order to validate the phone number in this format).\nYou must include either `email` or `customer_id` in every record. Some retailers can also use the `phone_number` or `extra_identifiers` field - speak to your Customer Success Representative if you're unsure."
           },
           "marketing_optin": {
             "type": "string",
@@ -2314,7 +2342,7 @@
           },
           "customer_id": {
             "type": "string",
-            "description": "Your universal customer ID for this contact, if applicable. max length: 255.\nOnly use this value if the customer ID is persistent across all your systems (that send data to Ometria).\nYou must include either `email` or `customer_id` in every record. Some retailers can also use the `phone_number` field - speak to your Customer Success Representative if you're unsure."
+            "description": "Your universal customer ID for this contact, if applicable. max length: 255.\nOnly use this value if the customer ID is persistent across all your systems (that send data to Ometria).\nYou must include either `email` or `customer_id` in every record. Some retailers can also use the `phone_number` or `extra_identifiers` field - speak to your Customer Success Representative if you're unsure."
           },
           "@add_to_lists": {
             "type": "array",
@@ -2445,6 +2473,14 @@
           "preferred_lang": {
             "type": "string",
             "description": "The preferred language of the contact.\nThis should be supplied in ISO 639-1 format."
+          },
+          "extra_identifiers": {
+            "type": "array",
+            "description": "Optional list of extra identifiers as per your identity resolution configuration. E.g. `loyalty_id`.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtraIdentifier"
+            }
           }
         },
         "example": {
@@ -2490,7 +2526,17 @@
               "dt_updated_transactional": "2015-01-02T09:00:00+00"
             }
           },
-          "preferred_lang": "en-GB"
+          "preferred_lang": "en-GB",
+          "extra_identifiers": [
+            {
+              "type": "loyalty_id",
+              "value": "LOY-7898734"
+            },
+            {
+              "type": "external_id",
+              "value": "crm-abc-123"
+            }
+          ]
         }
       },
       "CustomEvent": {
@@ -2539,6 +2585,14 @@
           "identity_account_id": {
             "type": "string",
             "description": "The <a href=\"https://ometria-api-reference.readme.io/docs/contacts-endpoint#customer-ids\" target=\"blank\">contact ID</a> of the contact record on which to trigger this custom event."
+          },
+          "extra_identifiers": {
+            "type": "array",
+            "description": "Optional list of extra identifiers as per your identity resolution configuration. E.g. `loyalty_id`.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtraIdentifier"
+            }
           }
         },
         "example": {
@@ -2552,7 +2606,17 @@
           "profile_id": "xxxxx",
           "identity_email": "",
           "identity_phone_number": "+447812123456",
-          "identity_account_id": ""
+          "identity_account_id": "",
+          "extra_identifiers": [
+            {
+              "type": "loyalty_id",
+              "value": "LOY-7898734"
+            },
+            {
+              "type": "external_id",
+              "value": "crm-abc-123"
+            }
+          ]
         }
       },
       "CustomEventProperties": {
@@ -2935,6 +2999,14 @@
           "properties": {
             "description": "Custom key / value pairs accessible in emails using this order object.",
             "type": "object"
+          },
+          "extra_identifiers": {
+            "type": "array",
+            "description": "Optional list of extra identifiers as per your identity resolution configuration. E.g. `loyalty_id`.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtraIdentifier"
+            }
           }
         },
         "example": {
@@ -2977,6 +3049,16 @@
           "properties": {
             "custom_key": "custom value"
           },
+          "extra_identifiers": [
+            {
+              "type": "erp_id",
+              "value": "ERP-2025-00451"
+            },
+            {
+              "type": "fulfilment_id",
+              "value": "FL-9988"
+            }
+          ],
           "lineitems": [
             {
               "product_id": "SS14-059493",
@@ -3361,6 +3443,14 @@
           "properties": {
             "description": "Custom key / value pairs accessible in emails using this order object.",
             "type": "object"
+          },
+          "extra_identifiers": {
+            "type": "array",
+            "description": "Optional list of extra identifiers as per your identity resolution configuration. E.g. `loyalty_id`.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ExtraIdentifier"
+            }
           }
         },
         "example": {
@@ -3412,6 +3502,16 @@
           "properties": {
             "custom_key": "custom value"
           },
+          "extra_identifiers": [
+            {
+              "type": "erp_id",
+              "value": "ERP-2025-00451"
+            },
+            {
+              "type": "fulfilment_id",
+              "value": "FL-9988"
+            }
+          ],
           "lineitems": [
             {
               "product_id": "SS14-059493",
