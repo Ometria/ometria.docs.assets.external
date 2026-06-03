@@ -1563,10 +1563,31 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DataDeletionSubmission"
+              },
+              "examples": {
+                "named_identifier_field": {
+                  "summary": "Using a top-level identifier field",
+                  "value": {
+                    "email_address": "someone@domain.com",
+                    "comment": "Some comment",
+                    "action": "anonymise"
+                  }
+                },
+                "identity_resolution_identifier": {
+                  "summary": "Using an identifier from identity resolution config",
+                  "value": {
+                    "identifier": {
+                      "type": "loyalty_id",
+                      "value": "LOY-7898734"
+                    },
+                    "comment": "Some comment",
+                    "action": "anonymise"
+                  }
+                }
               }
             }
           },
-          "description": "There are three available identifiers: email_address, phone_number and customer_id.",
+          "description": "Provide exactly one identifier: `email_address`, `phone_number`, `customer_id`, or an `identifier` object referencing any identifier defined in your identity resolution configuration (e.g. `loyalty_id`).",
           "required": true
         },
         "responses": {
@@ -2883,7 +2904,7 @@
       },
       "DataDeletionSubmission": {
         "type": "object",
-        "description": "GDPR related data anonymisation request submission. Only one of the available identifiers must be provided (email_address or customer_id or phone_number).",
+        "description": "GDPR related data anonymisation request submission. Exactly one identifier must be provided to identify the individual: `email_address`, `customer_id`, `phone_number`, or an `identifier` object referencing any identifier defined in your account's identity resolution configuration (e.g. `loyalty_id`).",
         "properties": {
           "email_address": {
             "type": "string",
@@ -2896,6 +2917,26 @@
           "phone_number": {
             "type": "string",
             "description": "Phone number of individual to be anonymised, in E.164/International format (e.g. starting \"+447...\")"
+          },
+          "identifier": {
+            "type": "object",
+            "description": "An identifier as defined in your account's identity resolution configuration, used to identify the individual to be anonymised. Accepts any configured identifier type, including standard ones such as `email`, as well as custom ones such as `loyalty_id`. Provide this instead of `email_address`, `customer_id` or `phone_number`.",
+            "required": [
+              "type",
+              "value"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The identifier type, as defined in your identity resolution configuration. E.g. `loyalty_id` or `email`.",
+                "example": "loyalty_id"
+              },
+              "value": {
+                "type": "string",
+                "description": "The identifier value of the individual to be anonymised.",
+                "example": "LOY-7898734"
+              }
+            }
           },
           "comment": {
             "type": "string",
