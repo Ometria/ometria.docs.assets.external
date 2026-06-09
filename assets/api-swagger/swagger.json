@@ -832,7 +832,7 @@
           "Profiles"
         ],
         "summary": "Merge profiles based on the provided identifiers.",
-        "description": "Merge customers_to_merge profiles into the survivor profile. Identifiers supplied here can be any identifier defined in your account's identity resolution configuration (e.g. `customer_id`, `profile_hash`, `email_address`, `phone_number`, or any custom extra identifier such as `loyalty_id`).",
+        "description": "Merge customers_to_merge profiles into the survivor profile. Identifiers supplied here can be any identifier defined in your account's identity resolution configuration (e.g. `customer_id`, `profile_hash`, `email_address`, `phone_number`, or any custom extra identifier such as `loyalty_id`), as well as `profile_id` — the ID (hash) of the profile (e.g. `27f4-8337f0-002384af`).",
         "requestBody": {
           "required": true,
           "description": "profiles to merge, customers_to_merge will be merged into survivor",
@@ -862,6 +862,10 @@
                   {
                     "type": "phone_number",
                     "value": "+447123456789"
+                  },
+                  {
+                    "type": "profile_id",
+                    "value": "27f4-8337f0-002384af"
                   }
                 ]
               }
@@ -2326,7 +2330,7 @@
       "Contact": {
         "title": "Contact",
         "type": "object",
-        "description": "Describes an individual Contact listing record. At least one of the following are required to identify the customer: `email`, `customer_id`, `phone_number`, or `extra_identifiers` (any one entry satisfies the requirement).",
+        "description": "Describes an individual Contact listing record. At least one of the following are required to identify the customer: `email`, `customer_id`, `phone_number`, or `extra_identifiers` (any one entry satisfies the requirement). Ometria attempts to merge each contact record into a single profile using the identifiers configured for your account; by default these are `customer_id` and then `email`. Accounts using identity resolution can configure additional identifiers and control how they are matched and merged.",
         "required": [
           "@type",
           "id"
@@ -2522,7 +2526,7 @@
           },
           "extra_identifiers": {
             "type": "array",
-            "description": "Optional list of extra identifiers as per your identity resolution configuration. E.g. `loyalty_id`.",
+            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://ometria-api-reference.readme.io/docs/custom-identifiers\" target=\"_blank\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ExtraIdentifier"
@@ -2641,7 +2645,7 @@
           },
           "extra_identifiers": {
             "type": "array",
-            "description": "Optional list of extra identifiers as per your identity resolution configuration. E.g. `loyalty_id`.",
+            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://ometria-api-reference.readme.io/docs/custom-identifiers\" target=\"_blank\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ExtraIdentifier"
@@ -3075,7 +3079,7 @@
           },
           "extra_identifiers": {
             "type": "array",
-            "description": "Optional list of extra identifiers as per your identity resolution configuration. E.g. `loyalty_id`.",
+            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://ometria-api-reference.readme.io/docs/custom-identifiers\" target=\"_blank\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ExtraIdentifier"
@@ -3519,7 +3523,7 @@
           },
           "extra_identifiers": {
             "type": "array",
-            "description": "Optional list of extra identifiers as per your identity resolution configuration. E.g. `loyalty_id`.",
+            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://ometria-api-reference.readme.io/docs/custom-identifiers\" target=\"_blank\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ExtraIdentifier"
@@ -4783,7 +4787,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "description": "Type of profile identifier. Any identifier defined in your account's identity resolution configuration is accepted (e.g. `customer_id`, `profile_hash`, `email_address`, `phone_number`, or any custom extra identifier such as `loyalty_id`)."
+            "description": "Type of profile identifier. Any identifier defined in your account's identity resolution configuration is accepted (e.g. `customer_id`, `profile_hash`, `email_address`, `phone_number`, or any custom extra identifier such as `loyalty_id`). You can also provide `profile_id` — the ID (hash) of the profile (e.g. `27f4-8337f0-002384af`)."
           },
           "value": {
             "type": "string",
