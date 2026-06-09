@@ -2442,6 +2442,31 @@
               }
             }
           },
+          "subscriptions": {
+            "type": "object",
+            "description": "Marketing opt-in preferences for additional channels, e.g. direct mail. Each key is a channel name and its value describes the contact's preference for that channel.",
+            "properties": {
+              "direct_mail": {
+                "type": "object",
+                "description": "Direct mail (postal) marketing opt-in preference.",
+                "properties": {
+                  "allow_marketing": {
+                    "type": "boolean",
+                    "description": "Whether the contact is opted in/out for direct mail marketing. If left out, this implies unspecified."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The date and time the contact updated their direct mail marketing preference. Only provide if known.\nFollow ISO 8601 DateTime format with timezone offset YYYY-MM-DDThh:mm:ss+Z"
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "The contact's postal address, supplied as a JSON-encoded string. Supported fields: \"address_line_1\", \"city\", \"state\", \"postcode\", \"country_code\" (2 characters, upper case, following ISO 3166-1 alpha-2) and \"address_type\" (e.g. \"shipping\")."
+                  }
+                }
+              }
+            }
+          },
           "preferred_lang": {
             "type": "string",
             "description": "The preferred language of the contact.\nThis should be supplied in ISO 639-1 format."
@@ -2488,6 +2513,13 @@
               "allow_transactional": true,
               "dt_updated_marketing": "2015-01-02T09:00:00+00",
               "dt_updated_transactional": "2015-01-02T09:00:00+00"
+            }
+          },
+          "subscriptions": {
+            "direct_mail": {
+              "allow_marketing": true,
+              "timestamp": "2015-01-02T09:00:00+00",
+              "value": "{\"address_line_1\": \"63 Laurelbank Cres\", \"city\": \"Keswick\", \"state\": \"ON\", \"postcode\": \"L4P 4H7\", \"country_code\": \"CA\", \"address_type\": \"shipping\"}"
             }
           },
           "preferred_lang": "en-GB"
