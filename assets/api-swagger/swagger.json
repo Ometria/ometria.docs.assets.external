@@ -2890,6 +2890,10 @@
             "type": "string",
             "description": "Phone number of individual to be anonymised, in E.164/International format (e.g. starting \"+447...\")"
           },
+          "profile_id": {
+            "type": "string",
+            "description": "The ID (hash) of the profile to fetch (eg 27f4-8337f0-002384af)."
+          },
           "identifier": {
             "type": "object",
             "description": "An identifier as defined in your account's identity resolution configuration, used to identify the individual to be anonymised. Accepts any configured identifier type, including standard ones such as `email`, as well as custom ones such as `loyalty_id`. Provide this instead of `email_address`, `customer_id` or `phone_number`.",
