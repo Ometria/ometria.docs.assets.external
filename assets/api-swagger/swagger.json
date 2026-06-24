@@ -4237,6 +4237,13 @@
           "preferred_lang": {
             "type": "string",
             "description": "The preferred language of the contact.\nThis is supplied in ISO 639-1 format."
+          },
+          "identifiers": {
+            "type": "array",
+            "description": "All identifiers this profile resolves on, including standard identifiers (e.g. `email`, `customer_id`, `phone_number`) and any custom extra identifiers defined in your account's identity resolution configuration (e.g. `loyalty_id`). Each entry has a `type` (the identifier label) and a `value`. See <a href=\"https://support.ometria.com/hc/en-gb/articles/32595707442077-Custom-identifiers\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
+            "items": {
+              "$ref": "#/components/schemas/ProfileIdentifier"
+            }
           }
         },
         "example": {
@@ -4280,7 +4287,21 @@
             "marketing_optin": "2014-11-09T15:34:35+00:00",
             "marketing_optout": null
           },
-          "preferred_lang": "en-GB"
+          "preferred_lang": "en-GB",
+          "identifiers": [
+            {
+              "type": "email",
+              "value": "bob22@example.com"
+            },
+            {
+              "type": "customer_id",
+              "value": "55555"
+            },
+            {
+              "type": "loyalty_id",
+              "value": "LOY-55555"
+            }
+          ]
         }
       },
       "ProfileStats": {
