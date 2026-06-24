@@ -2526,7 +2526,7 @@
           },
           "extra_identifiers": {
             "type": "array",
-            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://ometria-api-reference.readme.io/docs/custom-identifiers\" target=\"_blank\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
+            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://support.ometria.com/hc/en-gb/articles/32595707442077-Custom-identifiers\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ExtraIdentifier"
@@ -2645,7 +2645,7 @@
           },
           "extra_identifiers": {
             "type": "array",
-            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://ometria-api-reference.readme.io/docs/custom-identifiers\" target=\"_blank\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
+            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://support.ometria.com/hc/en-gb/articles/32595707442077-Custom-identifiers\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ExtraIdentifier"
@@ -3079,7 +3079,7 @@
           },
           "extra_identifiers": {
             "type": "array",
-            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://ometria-api-reference.readme.io/docs/custom-identifiers\" target=\"_blank\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
+            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://support.ometria.com/hc/en-gb/articles/32595707442077-Custom-identifiers\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ExtraIdentifier"
@@ -3523,7 +3523,7 @@
           },
           "extra_identifiers": {
             "type": "array",
-            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://ometria-api-reference.readme.io/docs/custom-identifiers\" target=\"_blank\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
+            "description": "Optional list of extra identifiers (such as a loyalty ID) as per your identity resolution configuration, e.g. `loyalty_id`. Custom identifiers must be configured for your account before you send them. See <a href=\"https://support.ometria.com/hc/en-gb/articles/32595707442077-Custom-identifiers\">Custom identifiers</a> for the full format, multi-valued identifiers, and CSV usage.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ExtraIdentifier"
