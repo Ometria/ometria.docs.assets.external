@@ -4808,7 +4808,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "description": "Type of profile identifier. Any identifier defined in your account's identity resolution configuration is accepted (e.g. `customer_id`, `profile_hash`, `email_address`, `phone_number`, or any custom extra identifier such as `loyalty_id`). You can also provide `profile_id` — the ID (hash) of the profile (e.g. `27f4-8337f0-002384af`)."
+            "description": "Type of profile identifier. Any identifier defined in your account's identity resolution configuration is accepted (e.g. `customer_id`, `profile_hash`, `email_address`, `phone_number`, or any custom extra identifier such as `loyalty_id`)."
           },
           "value": {
             "type": "string",
