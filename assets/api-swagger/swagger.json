@@ -4755,7 +4755,9 @@
               "preferences_centre",
               "app",
               "list_unsubscribe",
-              "link_unsubscribe"
+              "link_unsubscribe",
+              "stopword_unsubscribe_TF",
+              "stopword_unsubscribe_DO"
             ]
           },
           "timestamp": {
