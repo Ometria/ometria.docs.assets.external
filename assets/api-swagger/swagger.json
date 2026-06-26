@@ -1479,8 +1479,8 @@
         "tags": [
           "Unsubscribes"
         ],
-        "summary": "Receive unsubscribed contacts within a time range.",
-        "description": "Returns unsubscribe events where the event was triggered from preferences centre, app, list unsubscribe (generated when the contact clicks the \"unsubscribe\" button in their email client), or link unsubscribe (generated when the contact clicks a link that is formatted for Ometria to recognise it).",
+        "summary": "Receive unsubscribe events within a given time range, across both email and SMS channels.",
+        "description": "Email\n\n The following unsubscribe types are available via the endpoint:\n\nPreferences centre\n\nApp\n\nList unsubscribe — when the contact clicks the \"unsubscribe\" button in their email client.\n\nLink unsubscribe — when the contact clicks a link formatted for Ometria to recognise.\n\nSMS\n\nTwo types are available via the endpoint:\n\nstopword_unsubscribe_TF — unsubscribe via a stop word in an automation campaign.\nstopword_unsubscribe_DO — unsubscribe via a stop word in double opt-in message.\n\nNot available via the endpoint\n\nAPI unsubscribes are not available through this endpoint, for either email or SMS.",
         "parameters": [
           {
             "name": "since",
