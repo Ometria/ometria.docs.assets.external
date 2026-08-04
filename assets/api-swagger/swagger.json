@@ -2599,7 +2599,7 @@
       "CustomEvent": {
         "title": "Custom Event",
         "type": "object",
-        "description": "Describes a custom event. One of \"profile_id\", \"identity_email\", \"identity_account_id\" is required.",
+        "description": "Describes a custom event. One of \"profile_id\", \"identity_email\", \"identity_account_id\" or \"extra_identifiers\" is required.",
         "required": [
           "@type",
           "id",
