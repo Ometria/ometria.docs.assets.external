@@ -711,7 +711,7 @@
             }
           },
           {
-            "name": "createdSince",
+            "name": "createSince",
             "in": "query",
             "description": "Only return contacts that have been created since this date.",
             "schema": {
@@ -720,7 +720,7 @@
             }
           },
           {
-            "name": "createdBefore",
+            "name": "createBefore",
             "in": "query",
             "description": "Only return contacts that have been created since this date.",
             "schema": {
