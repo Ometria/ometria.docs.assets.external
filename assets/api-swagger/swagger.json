@@ -1655,7 +1655,7 @@
           "Field forget (email / phone erasure)"
         ],
         "summary": "List field forget requests",
-        "description": "Returns previously filed field forget requests for your account and their status, newest first (by `timestamp_created`). Requests made from the Ometria app are included, with `source.origin` set to `app`.\n\nThere is no total count; page with `limit` and `offset` until an empty array is returned.\n\nRate limit: 60 read requests per minute per account, shared with `GET /field-forget/{id}`; HTTP 429 is returned when exceeded. Requires an API key with the `read:default` scope.",
+        "description": "Returns previously filed field forget requests for your account and their status, newest first (by `timestamp_created`). Requests made from the Ometria app are included, with `source.origin` set to `app`.\n\nThere is no total count; page with `limit` and `offset` until an empty array is returned.\n\nRate limit: 60 read requests per minute per API key, shared with `GET /field-forget/{id}`; HTTP 429 is returned when exceeded. Requires an API key with the `read:default` scope.",
         "parameters": [
           {
             "name": "limit",
@@ -1729,7 +1729,7 @@
             "description": "API key is not authorised to access this resource."
           },
           "429": {
-            "description": "Rate limit exceeded (60 read requests per minute per account). The body is the API's standard error envelope (`status`, `code`, `message`, `timestamp`)."
+            "description": "Rate limit exceeded (60 read requests per minute per API key). The response body is empty."
           }
         }
       },
@@ -1738,7 +1738,7 @@
           "Field forget (email / phone erasure)"
         ],
         "summary": "Create new field forget request",
-        "description": "Erase (\"forget\") a profile's `email` and/or `phone` while keeping the rest of the profile. This is not anonymisation: the profile stays live and only the requested field(s) are removed.\n\nFor each requested field, Ometria clears the value on the profile, removes it as an identifier so it no longer resolves to this profile, withdraws that channel's marketing consent, and removes it from the profile's listing data. `phone` covers the number, its country and its type. Because the identifier is removed rather than hashed, the same email address or phone number can afterwards be assigned to a different profile through a normal update (for example a `contact` record sent to `POST /push`). Nothing prevents the same value being added back to this profile later either.\n\n### Identifying the profile\n\n`profile_hash` is the opaque, account-scoped ID of a single profile, in the form `{hex}-{6 hex}-{8+ hex}` (lowercase), for example `27f4-f0b281-00003039`. It is the `id` of a profile as returned by `GET /profiles/{profile_id}` and `GET /profiles/`, the value accepted by the `profileHash` query parameter of `GET /profiles/` and by `/merge-profile` as identifier type `profile_hash`, and the \"Profile hash\" shown on a customer's profile page in the Ometria app. If you only know an email address, look the profile up first with `GET /profiles/?email=...` and use the `id` from the response.\n\n### Processing\n\nRequests are processed asynchronously. A `202` means the request was accepted and queued; poll `GET /field-forget/{id}` until `status` is terminal:\n\n- `completed`: the requested field(s) were erased.\n- `aborted_sole_identifier`: refused; nothing was changed. Erasing the requested field(s) would have left the profile with no other identifier Ometria can match on, that is, no enabled, deterministic identifier of a different type (as defined in your account's identity resolution configuration, e.g. `customer_id` or `loyalty_id`). A profile known only by its email address cannot have that email forgotten; a profile with an email address and a `customer_id` can. Terminal, with no automatic fallback.\n- `not_found`: the profile did not exist when the request was processed. A valid outcome, not an error.\n- `failed`: processing hit an error. Resubmit the request to retry.\n\nA request identical to one that is still `pending` or `in_progress` and less than 24 hours old returns the existing request's `id` (still `202`) rather than creating a new one, so retries are safe. Once a request has reached a terminal status, a new request for the same profile and fields is accepted again.\n\nProfile existence is not checked at submission: a well-formed `profile_hash` for a profile that has since been deleted is accepted and ends as `not_found`.\n\n### Field forget vs. data anonymisation\n\n`POST /data-deletion-requests` anonymises the whole profile (identifiers are hashed; the record is kept in anonymised form). `POST /field-forget` removes one or two fields and keeps the profile live. Only field forget frees an email address or phone number for use on another profile.\n\n### Limits and errors\n\nRate limit: 6 requests per minute per account; HTTP 429 is returned when exceeded. Requires an API key with the `write:default` scope.\n\nValidation errors (`400`, `404`) are returned as `{\"message\": \"...\", \"status\": <HTTP status>, \"title\": \"...\"}`. Authentication (`403`) and rate limit (`429`) errors use the API's standard error envelope, `{\"status\": \"ERROR\", \"code\": <HTTP status>, \"message\": \"...\", \"timestamp\": <unix time>}`.",
+        "description": "Erase (\"forget\") a profile's `email` and/or `phone` while keeping the rest of the profile. This is not anonymisation: the profile stays live and only the requested field(s) are removed.\n\nFor each requested field, Ometria clears the value on the profile, removes it as an identifier so it no longer resolves to this profile, withdraws that channel's marketing consent, and removes it from the profile's listing data. `phone` covers the number, its country and its type. Because the identifier is removed rather than hashed, the same email address or phone number can afterwards be assigned to a different profile through a normal update (for example a `contact` record sent to `POST /push`). Nothing prevents the same value being added back to this profile later either.\n\n### Identifying the profile\n\n`profile_hash` is the opaque, account-scoped ID of a single profile, in the form `{hex}-{6 hex}-{8+ hex}` (lowercase), for example `27f4-f0b281-00003039`. It is the `id` of a profile as returned by `GET /profiles/{profile_id}` and `GET /profiles/`, the value accepted by the `profileHash` query parameter of `GET /profiles/` and by `/merge-profile` as identifier type `profile_hash`, and the \"Profile hash\" shown on a customer's profile page in the Ometria app. If you only know an email address, look the profile up first with `GET /profiles/?email=...` and use the `id` from the response.\n\n### Processing\n\nRequests are processed asynchronously. A `202` means the request was accepted and queued; poll `GET /field-forget/{id}` until `status` is terminal:\n\n- `completed`: the requested field(s) were erased.\n- `aborted_sole_identifier`: refused; nothing was changed. Erasing the requested field(s) would have left the profile with no other identifier Ometria can match on, that is, no enabled, deterministic identifier of a different type (as defined in your account's identity resolution configuration, e.g. `customer_id` or `loyalty_id`). A profile known only by its email address cannot have that email forgotten; a profile with an email address and a `customer_id` can. Terminal, with no automatic fallback.\n- `not_found`: the profile did not exist when the request was processed. A valid outcome, not an error.\n- `failed`: processing hit an error. Resubmit the request to retry.\n\nA request identical to one that is still `pending` or `in_progress` and less than 24 hours old returns the existing request's `id` (still `202`) rather than creating a new one, so retries are safe. Once a request has reached a terminal status, a new request for the same profile and fields is accepted again.\n\nProfile existence is not checked at submission: a well-formed `profile_hash` for a profile that has since been deleted is accepted and ends as `not_found`.\n\n### Field forget vs. data anonymisation\n\n`POST /data-deletion-requests` anonymises the whole profile (identifiers are hashed; the record is kept in anonymised form). `POST /field-forget` removes one or two fields and keeps the profile live. Only field forget frees an email address or phone number for use on another profile.\n\n### Limits and errors\n\nRate limit: 6 requests per minute per API key; HTTP 429 is returned when exceeded, with an empty body. Requires an API key with the `write:default` scope.\n\nErrors other than `429` are returned as `{\"message\": \"...\", \"status\": <HTTP status>, \"title\": \"...\"}`, including a rejected payload (`400`), a missing scope (`403`) and an unknown profile (`404`). An unrecognised API key is rejected with a `403` before the request reaches field forget.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1783,7 +1783,7 @@
             }
           },
           "400": {
-            "description": "Invalid payload. (A body that is not valid JSON is rejected before reaching the service and uses the API's standard error envelope instead.)",
+            "description": "Invalid payload.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1817,7 +1817,15 @@
                   "body_not_an_object": {
                     "summary": "Request body is not a JSON object",
                     "value": {
-                      "message": "Request body must be an object",
+                      "message": "['email'] is not of type 'object'",
+                      "status": 400,
+                      "title": "Bad Request"
+                    }
+                  },
+                  "body_not_valid_json": {
+                    "summary": "Request body is not parseable JSON",
+                    "value": {
+                      "message": "Request body is not valid JSON",
                       "status": 400,
                       "title": "Bad Request"
                     }
@@ -1845,7 +1853,7 @@
             }
           },
           "429": {
-            "description": "Rate limit exceeded (6 requests per minute per account). The body is the API's standard error envelope (`status`, `code`, `message`, `timestamp`)."
+            "description": "Rate limit exceeded (6 requests per minute per API key). The response body is empty."
           }
         }
       }
@@ -1856,7 +1864,7 @@
           "Field forget (email / phone erasure)"
         ],
         "summary": "Get details of specific field forget request",
-        "description": "Returns details and status of a field forget request by its ID. Poll this endpoint after `POST /field-forget` until `status` is one of `completed`, `aborted_sole_identifier`, `not_found` or `failed`; see `POST /field-forget` for what each means.\n\nRate limit: 60 read requests per minute per account, shared with `GET /field-forget`; HTTP 429 is returned when exceeded. Requires an API key with the `read:default` scope.",
+        "description": "Returns details and status of a field forget request by its ID. Poll this endpoint after `POST /field-forget` until `status` is one of `completed`, `aborted_sole_identifier`, `not_found` or `failed`; see `POST /field-forget` for what each means.\n\nRate limit: 60 read requests per minute per API key, shared with `GET /field-forget`; HTTP 429 is returned when exceeded. Requires an API key with the `read:default` scope.",
         "parameters": [
           {
             "name": "id",
@@ -2001,7 +2009,7 @@
             }
           },
           "429": {
-            "description": "Rate limit exceeded (60 read requests per minute per account). The body is the API's standard error envelope (`status`, `code`, `message`, `timestamp`)."
+            "description": "Rate limit exceeded (60 read requests per minute per API key). The response body is empty."
           }
         }
       }
@@ -3381,7 +3389,7 @@
               "api_request_id": {
                 "type": "string",
                 "nullable": true,
-                "description": "The API request ID of the `POST /field-forget` call that filed this request, as also recorded in your account's API request log. `null` for requests filed from the Ometria app."
+                "description": "Identifies the `POST /field-forget` call that filed this request. If you sent an `X-Request-ID` header on that call, this is its value, so you can correlate the request with your own logs; otherwise Ometria generates one. `null` for requests filed from the Ometria app."
               }
             }
           },
@@ -3449,7 +3457,7 @@
       },
       "FieldForgetErrorMessage": {
         "type": "object",
-        "description": "Validation error returned by the field forget endpoints (HTTP 400 and 404). Authentication and rate limit errors use the API's standard error envelope instead (`status`, `code`, `message`, `timestamp`).",
+        "description": "Error returned by the field forget endpoints. Used for every status except `429`, whose body is empty.",
         "properties": {
           "message": {
             "type": "string",
