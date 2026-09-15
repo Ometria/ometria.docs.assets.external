@@ -1649,6 +1649,348 @@
         }
       }
     },
+    "/field-forget": {
+      "get": {
+        "tags": [
+          "Field forget (email / phone erasure)"
+        ],
+        "summary": "List field forget requests",
+        "description": "Returns previously filed field forget requests for your account and their status, newest first (by `timestamp_created`). Requests made from the Ometria app are included, with `source.origin` set to `app`.\n\nPage with `limit` and `offset`; `total_count` is the number of requests for the account.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of records to fetch. Maximum 500; larger values are capped to 500.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Index of first record to fetch.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of field forget request objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldForgetRequestPage"
+                },
+                "example": {
+                  "requests": [
+                    {
+                      "id": "6f1c2a0e-3b7d-4c8a-9e21-5d0f7b8a4c13",
+                      "profile_hash": "27f4-f0b281-00003039",
+                      "status": "pending",
+                      "fields": [
+                        "email"
+                      ],
+                      "source": {
+                        "origin": "api",
+                        "api_request_id": "0b7d9c2e-4f61-4e0a-8c3d-2a9e5f7b1d64"
+                      },
+                      "timestamp_created": "2026-09-07T10:18:12.833949+00:00",
+                      "timestamp_completed": null
+                    },
+                    {
+                      "id": "2c7e9f1a-5b3d-4e8c-9a1f-6d4b2e8c0a35",
+                      "profile_hash": "27f4-26e69b-0000007b",
+                      "status": "completed",
+                      "fields": [
+                        "phone"
+                      ],
+                      "source": {
+                        "origin": "app",
+                        "api_request_id": null
+                      },
+                      "timestamp_created": "2026-09-06T16:02:41.512087+00:00",
+                      "timestamp_completed": "2026-09-06T16:02:43.077120+00:00"
+                    }
+                  ],
+                  "offset": 0,
+                  "page_size": 2,
+                  "total_count": 2
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Field forget (email / phone erasure)"
+        ],
+        "summary": "Create new field forget request",
+        "description": "Erase a profile's `email` and/or `phone` while keeping the rest of the profile. For each requested field, Ometria clears the value on the profile. Nothing prevents the same value being added back to this profile later either.\n\n`profile_hash` is the `id` of a profile, as returned by `GET /profiles/`.\n\nRequests are processed asynchronously. A `202` means the request was accepted and queued; poll `GET /field-forget/{id}` until `status` is terminal. A request identical to one that is still `pending` or `in_progress` and less than 24 hours old returns the existing request's `id` (still `202`) rather than creating a new one, so retries are safe. Once a request has reached a terminal status, a new request for the same profile and fields is accepted again.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldForgetSubmission"
+              },
+              "examples": {
+                "single_field": {
+                  "summary": "Forget the email address only",
+                  "value": {
+                    "profile_hash": "27f4-f0b281-00003039",
+                    "fields": [
+                      "email"
+                    ]
+                  }
+                },
+                "both_fields": {
+                  "summary": "Forget both the email address and the phone number",
+                  "value": {
+                    "profile_hash": "27f4-f0b281-00003039",
+                    "fields": [
+                      "email",
+                      "phone"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "description": "Provide the `profile_hash` of the profile and the `fields` to erase: `email`, `phone`, or both.",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Field forget request accepted and queued for processing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldForgetPostResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldForgetErrorMessage"
+                },
+                "examples": {
+                  "fields_missing_or_empty": {
+                    "summary": "`fields` missing, empty or not a list",
+                    "value": {
+                      "message": "fields must be a non-empty list",
+                      "status": 400,
+                      "title": "Bad Request"
+                    }
+                  },
+                  "fields_unsupported": {
+                    "summary": "`fields` contains an unsupported value",
+                    "value": {
+                      "message": "fields must be a subset of email, phone",
+                      "status": 400,
+                      "title": "Bad Request"
+                    }
+                  },
+                  "profile_hash_malformed": {
+                    "summary": "`profile_hash` missing, not lowercase, or not a valid profile hash",
+                    "value": {
+                      "message": "profile_hash is malformed",
+                      "status": 400,
+                      "title": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
+          "404": {
+            "description": "Profile not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldForgetErrorMessage"
+                },
+                "example": {
+                  "message": "Profile doesn't exist",
+                  "status": 404,
+                  "title": "Resource Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/field-forget/{id}": {
+      "get": {
+        "tags": [
+          "Field forget (email / phone erasure)"
+        ],
+        "summary": "Get details of specific field forget request",
+        "description": "Returns details and status of a field forget request by its ID. Poll this endpoint after `POST /field-forget` until `status` is one of `completed`, `aborted_sole_identifier`, `not_found` or `failed`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The request ID returned by `POST /field-forget`.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A field forget request object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldForgetRequest"
+                },
+                "examples": {
+                  "pending": {
+                    "summary": "Accepted, waiting to be processed",
+                    "value": {
+                      "id": "6f1c2a0e-3b7d-4c8a-9e21-5d0f7b8a4c13",
+                      "profile_hash": "27f4-f0b281-00003039",
+                      "status": "pending",
+                      "fields": [
+                        "email"
+                      ],
+                      "source": {
+                        "origin": "api",
+                        "api_request_id": "0b7d9c2e-4f61-4e0a-8c3d-2a9e5f7b1d64"
+                      },
+                      "timestamp_created": "2026-09-07T10:18:12.833949+00:00",
+                      "timestamp_completed": null
+                    }
+                  },
+                  "completed": {
+                    "summary": "Field(s) erased",
+                    "value": {
+                      "id": "6f1c2a0e-3b7d-4c8a-9e21-5d0f7b8a4c13",
+                      "profile_hash": "27f4-f0b281-00003039",
+                      "status": "completed",
+                      "fields": [
+                        "email"
+                      ],
+                      "source": {
+                        "origin": "api",
+                        "api_request_id": "0b7d9c2e-4f61-4e0a-8c3d-2a9e5f7b1d64"
+                      },
+                      "timestamp_created": "2026-09-07T10:18:12.833949+00:00",
+                      "timestamp_completed": "2026-09-07T10:18:14.102331+00:00"
+                    }
+                  },
+                  "aborted_sole_identifier": {
+                    "summary": "Refused: no other matchable identifier would remain",
+                    "value": {
+                      "id": "b3e8f1d2-7c4a-4a9e-8d5f-1e2c3b4a5d6e",
+                      "profile_hash": "27f4-26e69b-0000007b",
+                      "status": "aborted_sole_identifier",
+                      "fields": [
+                        "email",
+                        "phone"
+                      ],
+                      "source": {
+                        "origin": "api",
+                        "api_request_id": "5e9a1c3f-2d7b-4f60-a8e4-9c1b3d5f7a20"
+                      },
+                      "timestamp_created": "2026-09-07T09:40:03.221904+00:00",
+                      "timestamp_completed": "2026-09-07T09:40:04.006512+00:00"
+                    }
+                  },
+                  "not_found": {
+                    "summary": "Profile did not exist when processed",
+                    "value": {
+                      "id": "9a2d4c6e-1f3b-4d5a-b7c8-0e1f2a3b4c5d",
+                      "profile_hash": "27f4-8337f0-002384af",
+                      "status": "not_found",
+                      "fields": [
+                        "phone"
+                      ],
+                      "source": {
+                        "origin": "api",
+                        "api_request_id": "7f3b9d1e-6a2c-4e8f-b0d5-3c7a9e1f5b82"
+                      },
+                      "timestamp_created": "2026-09-07T08:15:27.480013+00:00",
+                      "timestamp_completed": "2026-09-07T08:15:28.115760+00:00"
+                    }
+                  },
+                  "failed": {
+                    "summary": "Processing error; resubmit to retry",
+                    "value": {
+                      "id": "d4c3b2a1-0f9e-4d8c-b7a6-5e4f3d2c1b0a",
+                      "profile_hash": "27f4-f0b281-00003039",
+                      "status": "failed",
+                      "fields": [
+                        "email"
+                      ],
+                      "source": {
+                        "origin": "api",
+                        "api_request_id": "1c5e7a9b-3d2f-4b6c-8e0a-4f6d8b2c9e17"
+                      },
+                      "timestamp_created": "2026-09-06T22:03:11.905228+00:00",
+                      "timestamp_completed": "2026-09-06T22:03:13.372641+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request ID is not a valid UUID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldForgetErrorMessage"
+                },
+                "example": {
+                  "message": "Field forget request ID is invalid",
+                  "status": 400,
+                  "title": "Bad Request"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key is not authorised to access this resource."
+          },
+          "404": {
+            "description": "Field forget request with specified ID was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldForgetErrorMessage"
+                },
+                "example": {
+                  "message": "Field forget request doesn't exist",
+                  "status": 404,
+                  "title": "Resource Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/custom_fields": {
       "get": {
         "tags": [
@@ -2965,6 +3307,187 @@
           "action": "anonymise"
         }
       },
+      "FieldForgetPostResponse": {
+        "type": "object",
+        "description": "Response to a field forget request submission",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The request ID. Use it with `GET /field-forget/{id}` to poll for the outcome. An identical request that is still in flight and less than 24 hours old returns the ID of the existing request."
+          }
+        },
+        "example": {
+          "id": "6f1c2a0e-3b7d-4c8a-9e21-5d0f7b8a4c13"
+        }
+      },
+      "FieldForgetRequest": {
+        "type": "object",
+        "description": "Describes a field forget request and its status",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The request ID"
+          },
+          "profile_hash": {
+            "type": "string",
+            "description": "The profile hash of the profile the request was filed for (eg 27f4-f0b281-00003039)."
+          },
+          "status": {
+            "type": "string",
+            "description": "Current state of the request. `pending`: accepted and queued. `in_progress`: being processed. Terminal states: `completed` (the requested fields were erased), `aborted_sole_identifier` (refused and nothing changed, because erasing the fields would have left the profile with no other identifier Ometria can match on), `not_found` (the profile did not exist when processed), `failed` (an error occurred; resubmit to retry).",
+            "enum": [
+              "pending",
+              "in_progress",
+              "completed",
+              "aborted_sole_identifier",
+              "failed",
+              "not_found"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "description": "The fields requested, sorted alphabetically and deduplicated.",
+            "items": {
+              "type": "string",
+              "description": "A field that can be forgotten. This list is the set supported by the service and is kept in sync via the service's own spec test.",
+              "enum": [
+                "email",
+                "phone"
+              ]
+            }
+          },
+          "source": {
+            "type": "object",
+            "description": "Where the request originated.",
+            "properties": {
+              "origin": {
+                "type": "string",
+                "description": "`api` for requests filed through this API, `app` for requests filed from the Ometria app.",
+                "enum": [
+                  "app",
+                  "api"
+                ]
+              },
+              "api_request_id": {
+                "type": "string",
+                "nullable": true,
+                "description": "Identifies the `POST /field-forget` call that filed this request. If you sent an `X-Request-ID` header on that call, this is its value, so you can correlate the request with your own logs; otherwise Ometria generates one. `null` for requests filed from the Ometria app."
+              }
+            }
+          },
+          "timestamp_created": {
+            "type": "string",
+            "description": "Date and time of request being filed. Following ISO 8601 dateTime format with timezone offset _YYYY-MM-DDThh:mm:ss+Z_.",
+            "format": "date-time"
+          },
+          "timestamp_completed": {
+            "type": "string",
+            "nullable": true,
+            "description": "Date and time of request reaching a terminal status. Following ISO 8601 dateTime format with timezone offset _YYYY-MM-DDThh:mm:ss+Z_. `null` while the request is `pending` or `in_progress`.",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "id": "6f1c2a0e-3b7d-4c8a-9e21-5d0f7b8a4c13",
+          "profile_hash": "27f4-f0b281-00003039",
+          "status": "completed",
+          "fields": [
+            "email"
+          ],
+          "source": {
+            "origin": "api",
+            "api_request_id": "0b7d9c2e-4f61-4e0a-8c3d-2a9e5f7b1d64"
+          },
+          "timestamp_created": "2026-09-07T10:18:12.833949+00:00",
+          "timestamp_completed": "2026-09-07T10:18:14.102331+00:00"
+        }
+      },
+      "FieldForgetRequestPage": {
+        "type": "object",
+        "description": "A page of field forget requests.",
+        "properties": {
+          "requests": {
+            "type": "array",
+            "description": "The list of paginated objects.",
+            "items": {
+              "$ref": "#/components/schemas/FieldForgetRequest"
+            }
+          },
+          "offset": {
+            "type": "integer",
+            "description": "The offset value applied for pagination.",
+            "example": 0
+          },
+          "page_size": {
+            "type": "integer",
+            "description": "The actual number of objects in the current page.",
+            "example": 2
+          },
+          "total_count": {
+            "type": "integer",
+            "description": "The total number of field forget requests for the account.",
+            "example": 2
+          }
+        }
+      },
+      "FieldForgetSubmission": {
+        "type": "object",
+        "description": "Field forget request submission. Identifies one profile by its `profile_hash` and names the field(s) to erase.",
+        "required": [
+          "profile_hash",
+          "fields"
+        ],
+        "properties": {
+          "profile_hash": {
+            "type": "string",
+            "description": "The profile hash of the profile to act on, as returned by `GET /profiles/`.",
+            "pattern": "^[0-9a-f]+-[0-9a-f]{6}-[0-9a-f]{8,}$",
+            "example": "27f4-f0b281-00003039"
+          },
+          "fields": {
+            "type": "array",
+            "description": "The field(s) to erase: `email`, `phone`, or both. Order does not matter and duplicates are ignored; the request is stored and returned with the fields sorted alphabetically.",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "description": "A field that can be forgotten. This list is the set supported by the service and is kept in sync via the service's own spec test.",
+              "enum": [
+                "email",
+                "phone"
+              ]
+            }
+          }
+        },
+        "example": {
+          "profile_hash": "27f4-f0b281-00003039",
+          "fields": [
+            "email"
+          ]
+        }
+      },
+      "FieldForgetErrorMessage": {
+        "type": "object",
+        "description": "Error returned by the field forget endpoints.",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "What was wrong with the request."
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code."
+          },
+          "title": {
+            "type": "string",
+            "description": "Short description of the error class."
+          }
+        },
+        "example": {
+          "message": "fields must be a subset of email, phone",
+          "status": 400,
+          "title": "Bad Request"
+        }
+      },
       "Order": {
         "title": "Order",
         "type": "object",
@@ -4128,7 +4651,7 @@
           },
           "id": {
             "type": "string",
-            "description": "The ID of this profile record."
+            "description": "The ID (profile hash) of this profile record, eg 27f4-f0b281-00003039. This is the `profile_hash` accepted by `/field-forget` and `/merge-profile`, and by the `profileHash` parameter of `GET /profiles/`."
           },
           "email": {
             "type": "string",
@@ -4253,7 +4776,7 @@
         },
         "example": {
           "@type": "profile",
-          "id": "2695-c473e2-4aaf58",
+          "id": "27f4-f0b281-00003039",
           "email": "bob22@example.com",
           "name": "smith111",
           "country": null,
