@@ -3812,7 +3812,7 @@
             "description": "The address the customer used for billing."
           },
           "coupon_code": {
-            "description": "Coupon code applied to this order.",
+            "description": "Coupon code applied to this order, max length: 128 characters. Pushed orders with a longer coupon code are rejected.",
             "type": "string"
           },
           "properties": {
@@ -4256,7 +4256,7 @@
             "$ref": "#/components/schemas/OrderAddress"
           },
           "coupon_code": {
-            "description": "The coupon code applied to this order, max length: 100, lower case.\nIf left empty this field is set to 'null'.",
+            "description": "The coupon code applied to this order, max length: 128 characters, lower case. Orders with a longer coupon code are rejected.\nIf left empty this field is set to 'null'.",
             "type": "string"
           },
           "properties": {
