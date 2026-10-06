@@ -3812,7 +3812,7 @@
             "description": "The address the customer used for billing."
           },
           "coupon_code": {
-            "description": "Coupon code applied to this order, max length: 128 characters. Orders with a longer coupon code are rejected.",
+            "description": "Coupon code applied to this order, max length: 128 characters. Pushed orders with a longer coupon code are rejected.",
             "type": "string"
           },
           "properties": {
