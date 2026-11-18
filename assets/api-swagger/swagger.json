@@ -1306,7 +1306,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of records to fetch. Maximum 250.",
+            "description": "The number of records to fetch. Maximum 1000; larger values are capped to 1000.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -1367,7 +1367,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of records to fetch. Max 250",
+            "description": "The number of records to fetch. Maximum 10000; larger values are capped to 10000.",
             "required": false,
             "schema": {
               "type": "integer",
